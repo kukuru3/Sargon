@@ -4,6 +4,7 @@ using Sargon.Assets;
 using Ur.Geometry;
 using Ur;
 using IntRect = Ur.Grid.Rect;
+
 namespace Sargon.Graphics {
     public class Sprite : IRenderable {
 
@@ -16,7 +17,7 @@ namespace Sargon.Graphics {
 
         #region Properties
         public SpriteDefinition Source { get; set; }
-        public Vector2 Scale { get; set; }
+        public Vector2 Scale { get; set; } = Vector2.One;
         public Vector2 Position { get; set; }
         public float   Rotation { get; set; }
         public Canvas  OnCanvas { get; set; }
@@ -29,7 +30,8 @@ namespace Sargon.Graphics {
         public Sprite() {
             nativeSprite = new SFML.Graphics.Sprite();           
         }
-                         
+
+        
         public void Display() {
             nativeSprite.Texture    = Source.Texture.NativeTexture;
             nativeSprite.Color      = Color.ToSFMLColor();
@@ -40,6 +42,8 @@ namespace Sargon.Graphics {
 
             // DO RENDER!
 
+            OnCanvas?.Pipeline.Game.MainWindow.Draw(nativeSprite);
+            
         }
 
         public void OverrideTextureSubrect(Ur.Grid.Rect rect) {
@@ -47,7 +51,7 @@ namespace Sargon.Graphics {
         }
 
         public void Dispose() {
-            
+            nativeSprite.Dispose();
         }
         
     }

@@ -2,7 +2,16 @@
 using System.Collections.Generic;
 
 namespace Sargon.Graphics {
-    public class Protocol {
+
+   
+
+    public class Protocol : BasicPipelineStep {
+
+        public Protocol(Pipeline pipeline) : base(pipeline) {
+
+        }
+
+        public override void Display() { }
 
         internal enum ProtocolItemTypes {
             None,

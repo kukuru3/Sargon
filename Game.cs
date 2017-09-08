@@ -32,11 +32,12 @@ namespace Sargon {
 
         /// <summary> Returns interpolation within one tick.</summary>
         public float Interpolation { get { return Timer.Interpolation;  } }
+
+        public Session.GameContext Context { get; private set; }
         #endregion
 
-        #region Properties - private, internal
-        private  SFML.Graphics.RenderWindow MainWindow { get; set;}
-        public   Session.GameContext Context { get; private set; } 
+        #region Properties - private, internal        
+        internal  SFML.Graphics.RenderWindow MainWindow { get; private set;}
         internal Session.GameTime Timer { get; }        
         #endregion
 

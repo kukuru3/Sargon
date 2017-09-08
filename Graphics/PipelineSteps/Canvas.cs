@@ -3,32 +3,26 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace Sargon.Graphics {
-    public class Canvas {
+    public class Canvas : BasicPipelineStep {
             
         #region Fields
         private List<IRenderable> activeItems;
-        private IOrderedEnumerable<IRenderable> finalDrawList;
-        private HashSet<IRenderable> flaggedForRemoval;
-        private float zed;
+        private List<IRenderable> finalDrawList;
+        //private IOrderedEnumerable<IRenderable> finalDrawList;
+        private HashSet<IRenderable> flaggedForRemoval;        
         private bool  isRenderablesOrderDirty;
-        private readonly Pipeline pipeline;
         #endregion
             
         #region Public properties
         /// <summary> Set to false if you want not to render this canvas. Note that canvases can still be rendered explicitly in a Protocol</summary>
-        public bool DoesRender { get; set; } = true;
-        /// <summary>"Zed" determins when canvas is rendered. Smaller zed is drawn earlier. Larger zed is drawn on top. </summary>
-        public float Zed { get { return zed; } set { zed = value; pipeline.MarkCanvasListDirty(); } }
-
+        
         public bool SortRenderables { get; set; } 
         #endregion
 
         #region Constructor
-        internal Canvas(Pipeline p) {
-            pipeline = p;
+        public Canvas(Pipeline p) : base(p) {
             activeItems = new List<IRenderable>();
-            flaggedForRemoval = new HashSet<IRenderable>();
-            zed = pipeline.GetAutomaticCanvasZed();
+            flaggedForRemoval = new HashSet<IRenderable>();            
         }
         #endregion
             
@@ -44,6 +38,12 @@ namespace Sargon.Graphics {
         
         public void Clear() { foreach (var item in activeItems) item.OnCanvas = null; activeItems.Clear(); flaggedForRemoval.Clear(); }
 
+        public override void Display() {
+            BeginDisplay();
+            DrawRenderables();
+            FinalizeDisplay();
+        }
+
         #endregion
 
         #region Called by Sargon guts
@@ -52,11 +52,7 @@ namespace Sargon.Graphics {
             isRenderablesOrderDirty = true;
         }
 
-        internal virtual void Display() {
-            BeginDisplay();
-            DrawRenderables();
-            FinalizeDisplay();
-        }
+       
         #endregion
 
         #region Rendering
@@ -69,8 +65,8 @@ namespace Sargon.Graphics {
         }
 
         protected virtual void BeginDisplay() {
-            finalDrawList = (IOrderedEnumerable<IRenderable>)activeItems;
-            if (SortRenderables && isRenderablesOrderDirty) finalDrawList = finalDrawList.Where(item => item.Visible).OrderBy(r => r.Zed);
+            finalDrawList = activeItems;
+            if (SortRenderables && isRenderablesOrderDirty) finalDrawList = finalDrawList.Where(item => item.Visible).OrderBy(r => r.Zed).ToList();
             isRenderablesOrderDirty = false;
         }
         #endregion

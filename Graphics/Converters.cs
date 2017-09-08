@@ -5,7 +5,8 @@ namespace Sargon.Graphics {
     static public class ConversionUtility {
 
         static internal SFML.Graphics.Color ToSFMLColor(this Ur.Color source) {
-            return new SFML.Graphics.Color( Ur.Color.ToUnsignedInteger(source));
+            var z = Ur.Color.ToUnsignedInteger(source);
+            return new SFML.Graphics.Color( z );
         }
 
         static internal SFML.System.Vector2f ToSFMLVector2f(this Ur.Geometry.Vector2 source) {

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 
 namespace Sargon.Graphics {
+
+
     public class Pipeline : State {
 
         /// <summary> The priority at which Pipeline processes the frame to render.
@@ -10,7 +12,7 @@ namespace Sargon.Graphics {
         public const int PRIORITY = 99999;
 
         #region Fields
-        private List<Canvas> canvasList = null;
+        private List<IPipelineStep> steps = null;
         private bool canvasListDirty = true;
         private float canvasAutoZed = 0f;
         #endregion
@@ -18,7 +20,7 @@ namespace Sargon.Graphics {
         #region Ctor
         internal Pipeline() {
             IsInternal = true;
-            canvasList = new List<Canvas>();
+            steps = new List<IPipelineStep>();
         } 
         #endregion
 
@@ -27,29 +29,35 @@ namespace Sargon.Graphics {
             Register(Hooks.Frame, ExecutePipeline, PRIORITY);
         }
 
-        internal void MarkCanvasListDirty() => canvasListDirty = true;
+        internal void MarkStepsDirty() => canvasListDirty = true;
 
-        internal float GetAutomaticCanvasZed() => ++canvasAutoZed;
-
-
+        internal float GetAutomaticStepZed() => ++canvasAutoZed;
+                    
         private void ExecutePipeline() {
 
             if (canvasListDirty) {
                 // do sorting here, etc.
                 canvasListDirty = false;                
-                canvasList = canvasList.OrderBy(c => c.Zed).ToList();
+                steps = steps.OrderBy(c => c.Zed).ToList();
             }
-            foreach (var canvas in canvasList) if (canvas.DoesRender) RenderCanvas(canvas);         
+            foreach (var step in steps) if (step.DoesRender) ExecuteStep(step);
+
+            Context.GameInstance.MainWindow.Display();
+
         }
 
-        private void RenderCanvas(Canvas canvas) {            
-            canvas.Display();
+        private void ExecuteStep(IPipelineStep step) {            
+            step.Display();
         }
-        
-        public Canvas CreateCanvas() {
-            var c = new Canvas(this);
-            MarkCanvasListDirty();
-            return c;
+
+        internal void AddStep(IPipelineStep step) {
+            steps.Add(step);
+            MarkStepsDirty();
+        }
+
+        public void RemoveStep(IPipelineStep step) {
+            steps.Remove(step);
+            MarkStepsDirty();
         }
     }
 }

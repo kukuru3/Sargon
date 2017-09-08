@@ -76,11 +76,13 @@
     <Compile Include="Assets\SpriteDefinition.cs" />
     <Compile Include="Errors\SargonException.cs" />
     <Compile Include="Game.cs" />
-    <Compile Include="Graphics\Canvas.cs" />
+    <Compile Include="Graphics\PipelineSteps\BackgroundColorSetter.cs" />
+    <Compile Include="Graphics\PipelineSteps\Canvas.cs" />
     <Compile Include="Graphics\Converters.cs" />
     <Compile Include="Graphics\IRenderable.cs" />
     <Compile Include="Graphics\Pipeline.cs" />
-    <Compile Include="Graphics\Protocol.cs" />
+    <Compile Include="Graphics\PipelineSteps\BasicPipelineStep.cs" />
+    <Compile Include="Graphics\PipelineSteps\Protocol.cs" />
     <Compile Include="Graphics\Sprite.cs" />
     <Compile Include="Hooks.cs" />
     <Compile Include="Input\Conversions.cs" />
