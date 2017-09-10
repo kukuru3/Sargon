@@ -9,7 +9,7 @@ namespace Sargon {
         public bool IsInternal { get; internal set; }
 
         public Game Game => Manager.GameInstance;
-        public Session.GameContext Context => Manager.GameInstance.Context;
+        public GameContext Context => Manager.GameInstance.Context;
 
         protected internal void Register(Hooks hook, Action a, int priority = 0) {
             Manager.RegisterHook(hook, a, priority);

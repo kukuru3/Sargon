@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Ur;
 using Ur.Grid;    
 
@@ -19,8 +20,8 @@ namespace Sargon.Input {
             activeKeys = new HashSet<Key>();
             IsInternal = true;
             CreateMaps();
-            Register(Hooks.Frame, ProcessInput , -1000);
-            Register(Hooks.Frame, ResetInput, 99999);            
+            Register(Hooks.Frame, PrepareInput , -99999);
+            Register(Hooks.Frame, FinalizeInput,  99999);            
         }
 
         private void CreateMaps() {
@@ -32,22 +33,22 @@ namespace Sargon.Input {
             }
         }
         
-        private void ResetInput() {
-            
-            foreach (var key in activeKeys) {
-                if      (key.status == Key.Status.Pressed) key.status = Key.Status.Held;                
-                else if (key.status == Key.Status.Raised) key.status = Key.Status.Idle;                
-            }
-
-            MouseWheel = 0f;            
+        private void FinalizeInput() {
+            MouseWheel = 0f;
         }
 
         public Key GetKey(Keys keys) {
             return keyStates[(int)keys];
         }
 
-        private void ProcessInput() {
-            CancelKeys();
+        private void AgeKeyInfo(Key k) {
+            if (k.status == Key.Status.Pressed) k.status = Key.Status.Held;
+            if (k.status == Key.Status.Raised)  k.status = Key.Status.Idle;
+        }
+
+        private void PrepareInput() {
+            foreach (var key in activeKeys) AgeKeyInfo(key);            
+            PruneKeyList(); 
         }
 
         internal void AcceptNewMousePosition(int x, int y) {
@@ -56,11 +57,17 @@ namespace Sargon.Input {
             MousePosition = pos;
         }
 
+        internal void SetKeyStatus(Keys key, Key.Status status) {
+            var k = GetKey(key);
+            k.status = status;
+            activeKeys.Add(k);
+        }
+
         internal void AcceptWheelDelta(float delta) {
             MouseWheel += delta;
         }
 
-        internal void CancelKeys() {
+        internal void PruneKeyList() {
             activeKeys.RemoveWhere(k => k.status == Key.Status.Idle);
         }
 

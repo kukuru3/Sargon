@@ -22,7 +22,7 @@ namespace Sargon.Input {
 
         F1, F2, F3, F4, F5, F6, F7, F8, F9, F10, F11, F12,
 
-        Mouse1, Mous2, Mouse3, Mouse4, Mouse5, Mouse6, Mouse7, Mouse8,
+        Mouse1, Mouse2, Mouse3, Mouse4, Mouse5, Mouse6, Mouse7, Mouse8,
         Joy1, Joy2, Joy3, Joy4, Joy5, Joy6, Joy7, Joy8,                
     }
 

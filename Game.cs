@@ -30,23 +30,25 @@ namespace Sargon {
 
         public bool HasFocus { get; private set; } = true;
 
+        public float ElapsedTime => Timer.ElapsedTime;
+
         /// <summary> Returns interpolation within one tick.</summary>
         public float Interpolation { get { return Timer.Interpolation;  } }
 
-        public Session.GameContext Context { get; private set; }
+        public GameContext Context { get; private set; }
         #endregion
 
-        #region Properties - private, internal        
+        #region Properties - private, internal
         internal  SFML.Graphics.RenderWindow MainWindow { get; private set;}
-        internal Session.GameTime Timer { get; }        
+        internal Session.GameTime Timer { get; }
         #endregion
 
         #region Constructor
         public Game() {
             currentMode = new ResolutionMode(800, 600, WindowStyle.Windowed);
-            Context = new Session.GameContext(this);            
+            Context = new GameContext(this);
             Timer = new Session.GameTime();
-            CreateInternalStates();
+            CreateInternalStates();          
         } 
         #endregion
 
@@ -89,6 +91,11 @@ namespace Sargon {
 
         }
 
+        /// <summary> Call this if you want to end the execution of the app.</summary>
+        public void Terminate() {
+            MainWindow.Close();
+        }
+
         private void SetupTimers() {
             Timer.Start();
             MainWindow.SetFramerateLimit((uint)Timer.ScreenFramerateLimit);
@@ -127,7 +134,7 @@ namespace Sargon {
 
         private void RegisterWindowEvents() {
 
-            MainWindow.SetKeyRepeatEnabled(true);
+            MainWindow.SetKeyRepeatEnabled(false);            
 
             MainWindow.Closed += HandleClosed;
             MainWindow.LostFocus += HandleLostFocus;
@@ -196,7 +203,7 @@ namespace Sargon {
 
         private void HandleLostFocus(object sender, EventArgs e) {
             HasFocus = false;
-            Context.Input.CancelKeys();
+            Context.Input.PruneKeyList();
         }
         #endregion
 

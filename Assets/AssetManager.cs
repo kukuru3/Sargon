@@ -9,17 +9,13 @@ namespace Sargon.Assets {
         private Dictionary<Texture, List<SpriteDefinition>> spriteDefsByTexture;
         private Dictionary<string, SpriteDefinition>        spriteDefsByStringID;
         private Dictionary<Texture, string>                 textureIdentitiesLookup;
-
-        /// <summary> Normally we'd avoid this but having a static will really make certain conversions not 
-        /// be a major pain in the ass. </summary>
-        static internal AssetManager CurrentInstance { get; private set; }
-
+            
         public AssetManager() {            
             allSpriteDefinitions = new List<SpriteDefinition>();
             spriteDefsByTexture = new Dictionary<Texture, List<SpriteDefinition>>();
             spriteDefsByStringID = new Dictionary<string, SpriteDefinition>();
             textureIdentitiesLookup = new Dictionary<Texture, string>();
-            AssetManager.CurrentInstance = this;
+            
         }
 
         internal void HandleAssetLoaded(Ur.Filesystem.Loader loader, object asset) {
@@ -40,6 +36,15 @@ namespace Sargon.Assets {
             var idkey = GetTextureIdentityKey(loader, asset);
             textureIdentitiesLookup[asset] = idkey;
             spriteDefsByStringID.Add(idkey, asset);
+        }
+
+        /// <summary> For dynamically created textures</summary>
+        /// <param name="asset"></param>
+        public Texture CreateDynamicTexture(int width, int height, string identity) {
+            var t = new Texture(width, height, Ur.Color.White);
+            textureIdentitiesLookup[t] = identity;
+            spriteDefsByStringID.Add(identity, t);            
+            return t;
         }
 
         public void AddSpriteDefinition(Texture texture, Ur.Grid.Rect subrect, string identity) {

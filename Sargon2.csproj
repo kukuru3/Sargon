@@ -61,9 +61,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Ur">
-      <HintPath>..\..\Build\Debug\Ur.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\AssetManager.cs" />
@@ -92,13 +89,19 @@
     <Compile Include="Input\Key.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Session\BasicState.cs" />
-    <Compile Include="Session\GameContext.cs" />
+    <Compile Include="GameContext.cs" />
     <Compile Include="Session\GameTime.cs" />
     <Compile Include="Input\InputEventHandler.cs" />
     <Compile Include="Session\State.cs" />
     <Compile Include="Session\StateManager.cs" />
     <Compile Include="Utils\BasicLoader.cs" />
     <Compile Include="Utils\Logger.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Ur\Ur.csproj">
+      <Project>{dcf882ef-47b0-4770-850d-8cd5237855a9}</Project>
+      <Name>Ur</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

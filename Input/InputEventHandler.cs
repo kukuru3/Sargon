@@ -29,23 +29,21 @@ namespace Sargon.Input {
         }
 
         private void MouseButtonReleased(object sender, SFML.Window.MouseButtonEventArgs e) {
-            var key = Game.Context.Input.GetKey(Keys.Mouse1 + (int)e.Button);
-            key.status = Key.Status.Raised;
+            Game.Context.Input.SetKeyStatus(Keys.Mouse1 + (int)e.Button, Key.Status.Raised);
         }
 
-        private void MouseButtonPressed(object sender, SFML.Window.MouseButtonEventArgs e) {
-            var key = Game.Context.Input.GetKey(Keys.Mouse1 + (int)e.Button);
-            key.status = Key.Status.Pressed;
+        private void MouseButtonPressed(object sender, SFML.Window.MouseButtonEventArgs e) {            
+            Game.Context.Input.SetKeyStatus(Keys.Mouse1 + (int)e.Button, Key.Status.Pressed);           
         }
 
         private void KeyReleased(object sender, SFML.Window.KeyEventArgs e) {
-            var key = Game.Context.Input.Decode(e.Code);
-            Game.Context.Input.GetKey(key).status = Key.Status.Raised;
+            var key = Game.Context.Input.Decode(e.Code);            
+            Game.Context.Input.SetKeyStatus(key, Key.Status.Raised);
         }
 
         private void KeyPressed(object sender, SFML.Window.KeyEventArgs e) {
             var key = Game.Context.Input.Decode(e.Code);
-            Game.Context.Input.GetKey(key).status = Key.Status.Pressed;
+            Game.Context.Input.SetKeyStatus(key, Key.Status.Pressed);
         }
 
         private void TextEntered(object sender, SFML.Window.TextEventArgs e) {
