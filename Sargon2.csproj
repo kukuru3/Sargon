@@ -81,6 +81,7 @@
     <Compile Include="Graphics\PipelineSteps\BasicPipelineStep.cs" />
     <Compile Include="Graphics\PipelineSteps\Protocol.cs" />
     <Compile Include="Graphics\Sprite.cs" />
+    <Compile Include="Graphics\Text.cs" />
     <Compile Include="Hooks.cs" />
     <Compile Include="Input\Conversions.cs" />
     <Compile Include="Input\Definitions.cs" />
@@ -96,6 +97,7 @@
     <Compile Include="Session\StateManager.cs" />
     <Compile Include="Utils\BasicLoader.cs" />
     <Compile Include="Utils\Logger.cs" />
+    <Compile Include="Utils\TextUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ur\Ur.csproj">

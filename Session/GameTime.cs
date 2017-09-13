@@ -6,7 +6,7 @@ namespace Sargon.Session {
 
         const int DEFAULT_TICK_FREQUENCY = 20;
         const int MAX_TICKS_PER_LOOP     = 5;
-        const int DEFAULT_FRAMERATE      = 60;
+        const int DEFAULT_FRAMERATE      = 0;
         const bool DEFAULT_VSYNC         = false;
         
         private Stopwatch Stopwatch;        
@@ -61,7 +61,16 @@ namespace Sargon.Session {
             FrameCounter++;
             Interpolation = Ur.Numbers.Choke( (float)(e - timeOfPreviousTick).Ticks / SystemTicksPerGameTick, 0f, 1f);
 
-        }        
+        }
 
+        private double recordedFrameTime;
+        
+        internal void CaptureFrameTime() {
+            var el = Stopwatch.Elapsed.TotalSeconds;
+            FrameTime = (float)(el - recordedFrameTime);
+            recordedFrameTime = el;
+        }
+
+        public float FrameTime { get; private set; }
     }
 }

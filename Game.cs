@@ -32,6 +32,8 @@ namespace Sargon {
 
         public float ElapsedTime => Timer.ElapsedTime;
 
+        public float FrameTime   => Timer.FrameTime;
+
         /// <summary> Returns interpolation within one tick.</summary>
         public float Interpolation { get { return Timer.Interpolation;  } }
 
@@ -119,13 +121,14 @@ namespace Sargon {
             while (MainWindow.IsOpen) {
                 MainWindow.DispatchEvents();
                 ExecuteFrame();
-                Timer.Advance();                
+                Timer.Advance();
             }
         }
            
-        private void ExecuteFrame() {
+        private void ExecuteFrame() {            
             Context.StateManager.Trigger(Hooks.Frame);
             Context.StateManager.FlushStateQueues();
+            Timer.CaptureFrameTime();
         }
 
         private void ExecuteTick() {
