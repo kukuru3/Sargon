@@ -43,7 +43,6 @@ namespace Sargon.Graphics {
             DrawRenderables();
             FinalizeDisplay();
         }
-
         #endregion
 
         #region Called by Sargon guts
@@ -51,8 +50,6 @@ namespace Sargon.Graphics {
             if (!SortRenderables) return;
             isRenderablesOrderDirty = true;
         }
-
-       
         #endregion
 
         #region Rendering

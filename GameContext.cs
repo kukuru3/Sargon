@@ -8,6 +8,7 @@ namespace Sargon {
         internal Input.InputEventHandler    InputHandler { get; }
         internal Utils.Logger               Logger       { get; }
         internal StateManager               StateManager { get; }
+        internal Graphics.Renderer          Renderer     { get; }
         internal BaseState                  BaseState    { get; set; }
 
         public Assets.AssetManager          Assets       { get; set; }
@@ -20,6 +21,7 @@ namespace Sargon {
             InputHandler = new Input.InputEventHandler(sgame);           
             Logger       = new Utils.Logger();
             Assets       = new Assets.AssetManager();
+            Renderer     = new Graphics.Renderer();
             Current = this;
         }
     }

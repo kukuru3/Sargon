@@ -16,9 +16,11 @@ namespace Sargon.Assets {
 
     public interface IAsset : IDisposable {
 
+        string Path { get; }
         LoadStates LoadState { get; }
         void StartLoad();
         void Unload();
+
         
     }
 }

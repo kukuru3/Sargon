@@ -9,7 +9,7 @@ namespace Sargon.Graphics.PipelineSteps {
         }
 
         public override void Display() {
-            Pipeline.Game.MainWindow.Clear(Color.ToSFMLColor());
+            Pipeline.Game.RenderTarget.Clear(Color.ToSFMLColor());
         }
     }
 }

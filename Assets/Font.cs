@@ -11,7 +11,7 @@ namespace Sargon.Assets {
                                                       
         internal SFML.Graphics.Font NativeFont { get; private set; }
 
-        private string Path { get; }
+        public string Path { get; }
 
         public LoadStates LoadState { get; private set; }
 
@@ -37,5 +37,7 @@ namespace Sargon.Assets {
         public void Dispose() {
             if (NativeFont != null) NativeFont.Dispose();
         }
+
+        public static implicit operator Font(string assetID) => GameContext.Current.Assets.GetFont(assetID);
     }
 }

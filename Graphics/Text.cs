@@ -40,6 +40,7 @@ namespace Sargon.Graphics {
         public bool Visible { get; set; } = true;
         public Ur.Color Color { get; set; }
         public Canvas OnCanvas { get; set; }
+        public bool Additive { get; set; }
 
         public float Zed { get { return z; } set { if (z.Approximately(value)) return; z = value; OnCanvas?.MarkMemberDepthAsDirty(); } }
 
@@ -106,7 +107,7 @@ namespace Sargon.Graphics {
             }
             foreach (var sprite in this.sprites) {
                 sprite.Color = this.Color.ToSFMLColor();
-                OnCanvas?.Pipeline.Game.MainWindow.Draw(sprite);
+                OnCanvas?.Pipeline.Game.Context.Renderer.RenderText(this, sprite);
             }
         }
             

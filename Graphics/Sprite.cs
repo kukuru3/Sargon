@@ -23,32 +23,33 @@ namespace Sargon.Graphics {
         public Canvas  OnCanvas { get; set; }
         public Color   Color    { get; set; } = Color.White;
         public bool Visible { get; set; }
-        public float Zed { get { return z; } set { if (z.Approximately(value)) return; z = value; OnCanvas?.MarkMemberDepthAsDirty(); } }        
+        public float Zed { get { return z; } set { if (z.Approximately(value)) return; z = value; OnCanvas?.MarkMemberDepthAsDirty(); } }
+
+        public IntRect TextureSubrect => sourceImageSubrect ?? Source.Rect;
+        public Ur.Grid.Coords Anchor => overriddenAnchor ?? Source.Anchor;
+
+        public bool Additive { get; set; }
         #endregion
 
         public Sprite() {
-            nativeSprite = new SFML.Graphics.Sprite();
+            if (!Renderer.UsePlaceholderSprite) {
+                this.nativeSprite = new SFML.Graphics.Sprite();
+            }
         }
 
         public void Fit(Rect toRect) {
             var r = sourceImageSubrect ?? Source.Rect;
             this.Scale = new Vector2(toRect.W / r.Width, toRect.H / r.Height);
-            this.Position = new Vector2(toRect.X0, toRect.Y0);            
-            
+            this.Position = new Vector2(toRect.X0, toRect.Y0);                        
         }
-
+        public void Fit(float w, float h) {
+            var r = sourceImageSubrect ?? Source.Rect;
+            this.Scale = new Vector2(w / r.Width, h / r.Height);
+        }
+        
         public void Display() {
-            nativeSprite.Texture     = Source.Texture.NativeTexture;
-            nativeSprite.Color       = Color.ToSFMLColor();
-            nativeSprite.Rotation    = Rotation;
-            nativeSprite.Position    = Position.ToSFMLVector2f();
-            nativeSprite.Scale       = Scale.ToSFMLVector2f();
-            nativeSprite.TextureRect = (sourceImageSubrect ?? Source.Rect).ToSFMLIntRect() ;
-            var anchor = overriddenAnchor ?? Source.Anchor;
-            nativeSprite.Origin      = new SFML.System.Vector2f(anchor.X, anchor.Y);
-            // DO RENDER!
 
-            OnCanvas?.Pipeline.Game.MainWindow.Draw(nativeSprite);
+            OnCanvas?.Pipeline.Context.Renderer.RenderSprite(this);
             
         }
 
@@ -69,6 +70,7 @@ namespace Sargon.Graphics {
         }
 
         public void Dispose() {
+            if (Renderer.UsePlaceholderSprite) return;
             nativeSprite?.Dispose();
         }
     }

@@ -80,6 +80,7 @@
     <Compile Include="Graphics\Pipeline.cs" />
     <Compile Include="Graphics\PipelineSteps\BasicPipelineStep.cs" />
     <Compile Include="Graphics\PipelineSteps\Protocol.cs" />
+    <Compile Include="Graphics\Renderer.cs" />
     <Compile Include="Graphics\Sprite.cs" />
     <Compile Include="Graphics\Text.cs" />
     <Compile Include="Hooks.cs" />

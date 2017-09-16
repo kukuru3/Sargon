@@ -6,12 +6,12 @@ namespace Sargon.Session {
 
         const int DEFAULT_TICK_FREQUENCY = 20;
         const int MAX_TICKS_PER_LOOP     = 5;
-        const int DEFAULT_FRAMERATE      = 0;
+        const int DEFAULT_FRAMERATE      = 60;
         const bool DEFAULT_VSYNC         = false;
         
         private Stopwatch Stopwatch;        
         private int    tickFrequency = DEFAULT_TICK_FREQUENCY;
-        private long SystemTicksPerGameTick;
+        private long SystemTicksPerGameTick = TimeSpan.TicksPerSecond / DEFAULT_TICK_FREQUENCY;
         private TimeSpan timeOfPreviousTick;
         
         public   int     ScreenFramerateLimit   { get; private set; }       = DEFAULT_FRAMERATE;
@@ -49,9 +49,9 @@ namespace Sargon.Session {
         }
 
         public void Advance() {
-            var e = Stopwatch.Elapsed;            
+            var elapsedTime = Stopwatch.Elapsed;            
             var loopCounter = 0;
-            while ((e - timeOfPreviousTick).Ticks > SystemTicksPerGameTick) {                
+            while ((elapsedTime - timeOfPreviousTick).Ticks > SystemTicksPerGameTick) {                
                 timeOfPreviousTick += new TimeSpan(SystemTicksPerGameTick);
                 loopCounter++;
                 TickCounter++;
@@ -59,7 +59,9 @@ namespace Sargon.Session {
                 if (loopCounter > MAX_TICKS_PER_LOOP) break;                
             }
             FrameCounter++;
-            Interpolation = Ur.Numbers.Choke( (float)(e - timeOfPreviousTick).Ticks / SystemTicksPerGameTick, 0f, 1f);
+            Interpolation = Ur.Numbers.Choke( 
+                (float)(elapsedTime - timeOfPreviousTick).Ticks / SystemTicksPerGameTick, 0f, 1f
+            );
 
         }
 

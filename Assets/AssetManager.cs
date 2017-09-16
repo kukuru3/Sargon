@@ -10,6 +10,7 @@ namespace Sargon.Assets {
         private Dictionary<Texture, List<SpriteDefinition>> spriteDefsByTexture;
         private Dictionary<string, SpriteDefinition> spriteDefsByStringID;
         private Dictionary<Texture, string> textureIdentitiesLookup; 
+        private Dictionary<string, Font>    fontsCachedByID;
         #endregion
 
         public int DefaultCharacterSize { get; set; } = 12;
@@ -20,8 +21,8 @@ namespace Sargon.Assets {
             allSpriteDefinitions = new List<SpriteDefinition>();
             spriteDefsByTexture = new Dictionary<Texture, List<SpriteDefinition>>();
             spriteDefsByStringID = new Dictionary<string, SpriteDefinition>();
+            fontsCachedByID         = new Dictionary<string, Font>();
             textureIdentitiesLookup = new Dictionary<Texture, string>();
-
         }
         #endregion
 
@@ -30,18 +31,21 @@ namespace Sargon.Assets {
             if (asset is Texture) {
                 HandleTextureLoaded(loader, (Texture)asset);
             } else if (asset is Font) {
-                HandleFontLoaded((Font)asset);
+                HandleFontLoaded(loader, (Font)asset);
             }
 
         }
 
-        private void HandleFontLoaded(Font asset) {
+        private void HandleFontLoaded(Ur.Filesystem.Loader loader, Font asset) {
             if (DefaultFont == null) DefaultFont = asset;
+
+            var idkey = GetAssetIdentityKey(loader);
+            fontsCachedByID.Add(idkey, asset);
         }
 
         private void HandleTextureLoaded(Ur.Filesystem.Loader loader, Texture asset) {
             spriteDefsByTexture[asset] = new List<SpriteDefinition>();
-            var idkey = GetTextureIdentityKey(loader, asset);
+            var idkey = GetAssetIdentityKey(loader);
             textureIdentitiesLookup[asset] = idkey;
             spriteDefsByStringID.Add(idkey, asset);
         }
@@ -82,13 +86,19 @@ namespace Sargon.Assets {
         } 
         #endregion
 
-        private string GetTextureIdentityKey(Ur.Filesystem.Loader loader, Texture texture) {
+        public Font GetFont(string assetIdentity) {
+            fontsCachedByID.TryGetValue(assetIdentity, out var value);
+            return value;
+        }
+
+        private string GetAssetIdentityKey(Ur.Filesystem.Loader loader) {
             var raw = loader.Path.Substring(loader.BasePath.Length + 1);
             raw = raw.Replace('\\', '.').Replace('/', '.');
             var extPos = raw.LastIndexOf('.');
             raw = raw.Substring(0, extPos);
             return raw;
         }
+        
 
     }
 }

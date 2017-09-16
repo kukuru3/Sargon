@@ -42,6 +42,7 @@ namespace Sargon {
 
         #region Properties - private, internal
         internal  SFML.Graphics.RenderWindow MainWindow { get; private set;}
+        internal SFML.Graphics.RenderTarget  RenderTarget { get; set; }
         internal Session.GameTime Timer { get; }
         #endregion
 
@@ -164,7 +165,7 @@ namespace Sargon {
 
             var sfmlContext = new ContextSettings(0, 0);
             MainWindow = new SFML.Graphics.RenderWindow(new VideoMode((uint)currentMode.Width, (uint)currentMode.Height), Title, sfmlStyles, sfmlContext);
-
+            RenderTarget = MainWindow;
         }
 
         private void CreateInternalStates() {
