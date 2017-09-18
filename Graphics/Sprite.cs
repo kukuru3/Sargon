@@ -19,10 +19,11 @@ namespace Sargon.Graphics {
         public SpriteDefinition Source { get; set; }
         public Vector2 Scale { get; set; } = Vector2.One;
         public Vector2 Position { get; set; }
-        public float   Rotation { get; set; }
-        public Canvas  OnCanvas { get; set; }
+        public float   Rotation { get; set; } = 0;
+        public Canvas  OnCanvas { get; set; } = null;
         public Color   Color    { get; set; } = Color.White;
-        public bool Visible { get; set; }
+        public bool Visible     { get; set; } = true;
+
         public float Zed { get { return z; } set { if (z.Approximately(value)) return; z = value; OnCanvas?.MarkMemberDepthAsDirty(); } }
 
         public IntRect TextureSubrect => sourceImageSubrect ?? Source.Rect;

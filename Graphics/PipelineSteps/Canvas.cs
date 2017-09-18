@@ -12,17 +12,18 @@ namespace Sargon.Graphics {
         private HashSet<IRenderable> flaggedForRemoval;        
         private bool  isRenderablesOrderDirty;
         #endregion
-            
+
         #region Public properties
         /// <summary> Set to false if you want not to render this canvas. Note that canvases can still be rendered explicitly in a Protocol</summary>
-        
-        public bool SortRenderables { get; set; } 
+
+        public bool SortRenderables { get; set; } = true;
         #endregion
 
         #region Constructor
         public Canvas(Pipeline p) : base(p) {
             activeItems = new List<IRenderable>();
-            flaggedForRemoval = new HashSet<IRenderable>();            
+            flaggedForRemoval = new HashSet<IRenderable>();
+            MarkMemberDepthAsDirty();
         }
         #endregion
             
@@ -62,8 +63,13 @@ namespace Sargon.Graphics {
         }
 
         protected virtual void BeginDisplay() {
-            finalDrawList = activeItems;
-            if (SortRenderables && isRenderablesOrderDirty) finalDrawList = finalDrawList.Where(item => item.Visible).OrderBy(r => r.Zed).ToList();
+
+            if (SortRenderables) {
+                if (finalDrawList == null) finalDrawList = activeItems;
+                if (isRenderablesOrderDirty) finalDrawList = finalDrawList.Where(item => item.Visible).OrderBy(r => r.Zed).ToList();
+            } else {
+                finalDrawList = activeItems;
+            }
             isRenderablesOrderDirty = false;
         }
         #endregion

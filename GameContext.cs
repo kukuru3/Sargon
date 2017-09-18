@@ -1,19 +1,25 @@
 ﻿using Sargon.Session;
 namespace Sargon {
     public class GameContext {
+
         public   Input.Manager              Input    { get; internal set; }        
         public   Graphics.Pipeline          Pipeline { get; internal set; }
         
-        internal Game GameInstance { get; }
+        public   Game GameInstance                       { get; }
+
         internal Input.InputEventHandler    InputHandler { get; }
         internal Utils.Logger               Logger       { get; }
         internal StateManager               StateManager { get; }
         internal Graphics.Renderer          Renderer     { get; }
         internal BaseState                  BaseState    { get; set; }
 
+        public Graphics.Screen            Screen       { get;  }
+
         public Assets.AssetManager          Assets       { get; set; }
 
         static internal GameContext Current { get; private set; }
+
+        public GameTime Timer => GameInstance.Timer;
                                     
         public GameContext(Game sgame) {
             GameInstance = sgame;
@@ -22,7 +28,11 @@ namespace Sargon {
             Logger       = new Utils.Logger();
             Assets       = new Assets.AssetManager();
             Renderer     = new Graphics.Renderer();
+            Screen       = new Graphics.Screen(sgame);
             Current = this;
         }
+
+
+
     }
 }

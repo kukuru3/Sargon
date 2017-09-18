@@ -2,7 +2,7 @@
 using Stopwatch = System.Diagnostics.Stopwatch;
 
 namespace Sargon.Session {
-    internal class GameTime {
+    public class GameTime {
 
         const int DEFAULT_TICK_FREQUENCY = 20;
         const int MAX_TICKS_PER_LOOP     = 5;
@@ -18,10 +18,10 @@ namespace Sargon.Session {
         public   bool    ScreenVSync            { get; private set; }       = DEFAULT_VSYNC;
 
         public float     ElapsedTime            => (float)Stopwatch.Elapsed.TotalSeconds;
+        public float     Interpolation          { get; private set; }
 
         internal long    FrameCounter           { get; private set; }
         internal long    TickCounter            { get; private set; }        
-        internal float   Interpolation          { get; private set; }
                 
         internal void SetTickFrequency(int ticks) {
             this.tickFrequency = ticks;

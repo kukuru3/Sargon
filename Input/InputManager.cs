@@ -34,7 +34,7 @@ namespace Sargon.Input {
         }
         
         private void FinalizeInput() {
-            MouseWheel = 0f;
+            
         }
 
         public Key GetKey(Keys keys) {
@@ -48,7 +48,8 @@ namespace Sargon.Input {
 
         private void PrepareInput() {
             foreach (var key in activeKeys) AgeKeyInfo(key);            
-            PruneKeyList(); 
+            PruneKeyList();
+            MouseWheel = 0;
         }
 
         internal void AcceptNewMousePosition(int x, int y) {

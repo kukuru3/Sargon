@@ -14,7 +14,7 @@ namespace Sargon {
         #endregion
 
         #region Fields
-        private ResolutionMode currentMode; 
+        
         #endregion
 
         #region Properties - public
@@ -29,27 +29,23 @@ namespace Sargon {
         public bool IsRunning { get; private set; } = false;
 
         public bool HasFocus { get; private set; } = true;
-
-        public float ElapsedTime => Timer.ElapsedTime;
-
-        public float FrameTime   => Timer.FrameTime;
-
-        /// <summary> Returns interpolation within one tick.</summary>
-        public float Interpolation { get { return Timer.Interpolation;  } }
-
+        
         public GameContext Context { get; private set; }
+
+        public float FrameTime => Timer.FrameTime;
         #endregion
 
         #region Properties - private, internal
         internal  SFML.Graphics.RenderWindow MainWindow { get; private set;}
         internal SFML.Graphics.RenderTarget  RenderTarget { get; set; }
         internal Session.GameTime Timer { get; }
+        internal ResolutionMode CurrentMode { get; private set; }
         #endregion
 
         #region Constructor
         public Game() {
-            currentMode = new ResolutionMode(800, 600, WindowStyle.Windowed);
-            Context = new GameContext(this);
+            CurrentMode = new ResolutionMode(800, 600, WindowStyle.Windowed);           
+            Context = new GameContext(this);            
             Timer = new Session.GameTime();
             CreateInternalStates();          
         } 
@@ -57,7 +53,7 @@ namespace Sargon {
 
         #region Public interface
         public void SetResolution(int width, int height, WindowStyle style) {
-            this.currentMode = new ResolutionMode(width, height, style);
+            this.CurrentMode = new ResolutionMode(width, height, style);
             if (MainWindow != null) {
                 throw new NotImplementedException("Screen resize not implemented yet");
             }
@@ -154,7 +150,7 @@ namespace Sargon {
             }
             Styles sfmlStyles = 0;
 
-            switch (currentMode.Style) {
+            switch (CurrentMode.Style) {
                 case WindowStyle.Windowed:
                     sfmlStyles = Styles.Titlebar | Styles.Close;
                     break;
@@ -164,7 +160,7 @@ namespace Sargon {
             }
 
             var sfmlContext = new ContextSettings(0, 0);
-            MainWindow = new SFML.Graphics.RenderWindow(new VideoMode((uint)currentMode.Width, (uint)currentMode.Height), Title, sfmlStyles, sfmlContext);
+            MainWindow = new SFML.Graphics.RenderWindow(new VideoMode((uint)CurrentMode.Width, (uint)CurrentMode.Height), Title, sfmlStyles, sfmlContext);
             RenderTarget = MainWindow;
         }
 
@@ -212,7 +208,7 @@ namespace Sargon {
         #endregion
 
         #region Private declarations
-        private struct ResolutionMode {
+        internal struct ResolutionMode {
             public int Width { get; }
             public int Height { get; }
             public WindowStyle Style { get; }

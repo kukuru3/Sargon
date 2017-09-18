@@ -87,6 +87,9 @@ namespace Sargon.Graphics {
             Color = Ur.Color.White;
             MarkDirty();
         }
+
+        
+
         public Text(string text, Assets.Font font = null, int charSize = 0) : this() {
             Visible = true;
             this.text = text;
@@ -115,6 +118,18 @@ namespace Sargon.Graphics {
             foreach (var item in this.sprites) item.Dispose();
             sprites.Clear();
 
+        }
+
+        public Text Clone() {
+            var t = new Text(this.text, this.font, this.charsize);
+            t.scale = this.scale;
+            t.rect = this.rect;
+            t.anchor = this.anchor;
+            t.z = z;
+            t.Visible = Visible;
+            t.Color = Color;
+            t.Additive = Additive;
+            return t;
         }
         #endregion
 
