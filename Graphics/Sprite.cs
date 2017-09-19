@@ -10,6 +10,7 @@ namespace Sargon.Graphics {
 
         #region Fields
         private float z;
+        private bool  visible = true;
         private IntRect? sourceImageSubrect;
         private Ur.Grid.Coords? overriddenAnchor;
         internal SFML.Graphics.Sprite nativeSprite;
@@ -22,7 +23,11 @@ namespace Sargon.Graphics {
         public float   Rotation { get; set; } = 0;
         public Canvas  OnCanvas { get; set; } = null;
         public Color   Color    { get; set; } = Color.White;
-        public bool Visible     { get; set; } = true;
+
+        public bool Visible     {
+            get => visible;
+            set { visible = value; OnCanvas?.MarkMemberDepthAsDirty(); }
+        }
 
         public float Zed { get { return z; } set { if (z.Approximately(value)) return; z = value; OnCanvas?.MarkMemberDepthAsDirty(); } }
 
@@ -50,7 +55,12 @@ namespace Sargon.Graphics {
         
         public void Display() {
 
-            OnCanvas?.Pipeline.Context.Renderer.RenderSprite(this);
+            var context = OnCanvas?.Pipeline.Context;
+            if (context == null) return;
+
+            context.Diagnostics.SpritesDrawn++;
+            context.Renderer.RenderSprite(this);
+            
             
         }
 

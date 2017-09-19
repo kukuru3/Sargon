@@ -108,9 +108,12 @@ namespace Sargon.Graphics {
                 isDirty = false;
                 RecalculateText();
             }
+            var context = OnCanvas?.Pipeline.Game.Context;
+            if (context == null) return;
             foreach (var sprite in this.sprites) {
                 sprite.Color = this.Color.ToSFMLColor();
-                OnCanvas?.Pipeline.Game.Context.Renderer.RenderText(this, sprite);
+                context.Diagnostics.TextCharactersDrawn += sprite.DisplayedString.Length;
+                context.Renderer.RenderText(this, sprite);
             }
         }
             

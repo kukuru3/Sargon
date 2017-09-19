@@ -33,6 +33,9 @@ namespace Sargon {
         public GameContext Context { get; private set; }
 
         public float FrameTime => Timer.FrameTime;
+
+
+
         #endregion
 
         #region Properties - private, internal
@@ -116,13 +119,16 @@ namespace Sargon {
             Timer.Ticked += ExecuteTick;
 
             while (MainWindow.IsOpen) {
+                Context.Diagnostics.ResetFrame();
                 MainWindow.DispatchEvents();
                 ExecuteFrame();
                 Timer.Advance();
+                Context.Diagnostics.FinishFrame();
             }
         }
            
-        private void ExecuteFrame() {            
+        private void ExecuteFrame() {
+            
             Context.StateManager.Trigger(Hooks.Frame);
             Context.StateManager.FlushStateQueues();
             Timer.CaptureFrameTime();

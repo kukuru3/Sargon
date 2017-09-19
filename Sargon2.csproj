@@ -98,6 +98,7 @@
     <Compile Include="Session\State.cs" />
     <Compile Include="Session\StateManager.cs" />
     <Compile Include="Utils\BasicLoader.cs" />
+    <Compile Include="Utils\Diagnostics.cs" />
     <Compile Include="Utils\Logger.cs" />
     <Compile Include="Utils\TextUtility.cs" />
   </ItemGroup>

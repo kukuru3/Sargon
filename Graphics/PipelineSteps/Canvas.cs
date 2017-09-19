@@ -64,11 +64,14 @@ namespace Sargon.Graphics {
 
         protected virtual void BeginDisplay() {
 
-            if (SortRenderables) {
-                if (finalDrawList == null) finalDrawList = activeItems;
-                if (isRenderablesOrderDirty) finalDrawList = finalDrawList.Where(item => item.Visible).OrderBy(r => r.Zed).ToList();
-            } else {
-                finalDrawList = activeItems;
+            if (finalDrawList == null) finalDrawList = activeItems;
+
+            if (isRenderablesOrderDirty) {
+                if (SortRenderables) {
+                    finalDrawList = activeItems.Where(item => item.Visible).OrderBy(r => r.Zed).ToList();
+                } else {
+                    finalDrawList = activeItems.Where(item => item.Visible).ToList();
+                }
             }
             isRenderablesOrderDirty = false;
         }

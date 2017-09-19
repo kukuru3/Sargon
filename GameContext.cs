@@ -4,8 +4,10 @@ namespace Sargon {
 
         public   Input.Manager              Input    { get; internal set; }        
         public   Graphics.Pipeline          Pipeline { get; internal set; }
+        public   Utils.Diagnostics Diagnostics { get; internal set; }
         
         public   Game GameInstance                       { get; }
+
 
         internal Input.InputEventHandler    InputHandler { get; }
         internal Utils.Logger               Logger       { get; }
@@ -25,6 +27,7 @@ namespace Sargon {
             GameInstance = sgame;
             StateManager = new StateManager(sgame);
             InputHandler = new Input.InputEventHandler(sgame);           
+            Diagnostics  = new Utils.Diagnostics();
             Logger       = new Utils.Logger();
             Assets       = new Assets.AssetManager();
             Renderer     = new Graphics.Renderer();
