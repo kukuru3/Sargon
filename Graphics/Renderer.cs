@@ -30,7 +30,7 @@ namespace Sargon.Graphics
             var s = UsePlaceholderSprite ? placeholderSprite : sprite.nativeSprite;
 
             s.Texture = sprite.Source.Texture.NativeTexture;
-            s.Color = Color.White; // sprite.Color.ToSFMLColor();
+            s.Color = sprite.Color.ToSFMLColor();
             s.Rotation = sprite.Rotation;
             s.Position = sprite.Position.ToSFMLVector2f();
             s.Scale = sprite.Scale.ToSFMLVector2f();            
@@ -39,7 +39,6 @@ namespace Sargon.Graphics
             s.Origin = new SFML.System.Vector2f(anchor.X, anchor.Y);
             // DO RENDER!
             blitState.BlendMode =  sprite.Additive ? BlendMode.Add : BlendMode.Alpha;
-            blitState.Texture = s.Texture;
             
             Pipeline.Game.RenderTarget.Draw(s, blitState);
 

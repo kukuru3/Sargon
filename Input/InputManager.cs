@@ -50,6 +50,7 @@ namespace Sargon.Input {
             foreach (var key in activeKeys) AgeKeyInfo(key);            
             PruneKeyList();
             MouseWheel = 0;
+            MouseDelta = new Coords(0, 0);
         }
 
         internal void AcceptNewMousePosition(int x, int y) {
