@@ -60,7 +60,10 @@
       <HintPath>..\..\ExtLib\SFML.Net-2.3\lib\x86\sfmlnet-window-2.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="YamlDotNet, Version=4.2.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Build\Debug\YamlDotNet.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\AssetManager.cs" />

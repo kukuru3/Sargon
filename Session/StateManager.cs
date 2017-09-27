@@ -34,6 +34,7 @@ namespace Sargon.Session {
         private void DoAddState(State state) {
             state.Manager = this;
             state.Initialize();
+            GameInstance.Context.Logger.Add("initializing state : " + state.GetType().Name, ConsoleColor.DarkGreen);
         }
 
         private void DoRemoveState(State state) {

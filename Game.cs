@@ -106,8 +106,6 @@ namespace Sargon {
 
         public void Log(string str, ConsoleColor color = ConsoleColor.Gray) {
             Context.Logger.Add(str, color);
-            Console.ForegroundColor = color;
-            Console.WriteLine(str);
         }
 
         #endregion

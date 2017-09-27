@@ -22,6 +22,12 @@ namespace Sargon.Utils {
 
         public Logger() {
             history = new Queue<LogItem>();
+            LogAdded += OnLogAdded;
+        }
+
+        private void OnLogAdded(LogItem obj) {
+            Console.ForegroundColor = obj.Color;
+            Console.WriteLine(obj.Content);
         }
 
         public void Clear() {
