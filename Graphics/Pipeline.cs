@@ -9,7 +9,7 @@ namespace Sargon.Graphics {
 
         /// <summary> The priority at which Pipeline processes the frame to render.
         /// Useful if you want to have stuff AFTER the frame is rendered. </summary>
-        public const int PRIORITY = 99999;
+        public const int PRIORITY = 9999;
 
         #region Fields
         private List<IPipelineStep> steps = null;
@@ -32,18 +32,18 @@ namespace Sargon.Graphics {
         internal void MarkStepsDirty() => canvasListDirty = true;
 
         internal float GetAutomaticStepZed() => ++canvasAutoZed;
-                    
+
         private void ExecutePipeline() {
 
             if (canvasListDirty) {
                 // do sorting here, etc.
-                canvasListDirty = false;                
+                canvasListDirty = false;
                 steps = steps.OrderBy(c => c.Zed).ToList();
             }
             foreach (var step in steps) if (step.DoesRender) ExecuteStep(step);
 
             Context.GameInstance.MainWindow.Display();
-
+            
         }
 
         private void ExecuteStep(IPipelineStep step) {            

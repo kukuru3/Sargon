@@ -91,7 +91,7 @@ namespace Sargon.Session {
 
             foreach (var item in allMethods) tempList[item.Hook].Add(item);
             foreach (var key in tempList.Keys) {
-                tempList[key].Sort((a,b) => Math.Sign(b.Priority - a.Priority));
+                tempList[key].Sort((a,b) => Math.Sign(a.Priority - b.Priority));
                 callList[key] = tempList[key].Select(md => md.Method).ToList();
             }
             

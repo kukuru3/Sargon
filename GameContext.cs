@@ -7,10 +7,10 @@ namespace Sargon {
         public   Utils.Diagnostics Diagnostics { get; internal set; }
         
         public   Game GameInstance                       { get; }
+        public   Utils.Logger               Logger       { get; }
 
 
         internal Input.InputEventHandler    InputHandler { get; }
-        internal Utils.Logger               Logger       { get; }
         internal StateManager               StateManager { get; }
         internal Graphics.Renderer          Renderer     { get; }
         internal BaseState                  BaseState    { get; set; }
