@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using SFML.Graphics;
+﻿using SFML.Graphics;
 
-namespace Sargon.Graphics
-{
+namespace Sargon.Graphics {
     internal class Renderer {
 
         internal const bool UsePlaceholderSprite = true;
@@ -17,12 +14,12 @@ namespace Sargon.Graphics
             blitState.BlendMode = BlendMode.Add;
 
             if (UsePlaceholderSprite) placeholderSprite = new SFML.Graphics.Sprite();
-               
+
         }
 
         SFML.Graphics.RenderStates blitState;
 
-        SFML.Graphics.Sprite       placeholderSprite;
+        SFML.Graphics.Sprite placeholderSprite;
 
 
         internal void RenderSprite(Sprite sprite) {
@@ -36,10 +33,10 @@ namespace Sargon.Graphics
             s.Scale = sprite.Scale.ToSFMLVector2f();
             s.TextureRect = sprite.TextureSubrect.ToSFMLIntRect();
             var anchor = sprite.Anchor;
-            s.Origin = new SFML.System.Vector2f( s.TextureRect.Width * anchor.x, s.TextureRect.Height * anchor.y);
+            s.Origin = new SFML.System.Vector2f(s.TextureRect.Width * anchor.x, s.TextureRect.Height * anchor.y);
             // DO RENDER!
-            blitState.BlendMode =  sprite.Additive ? BlendMode.Add : BlendMode.Alpha;
-            
+            blitState.BlendMode = sprite.Additive ? BlendMode.Add : BlendMode.Alpha;
+
             Pipeline.Game.RenderTarget.Draw(s, blitState);
 
         }

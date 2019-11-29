@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using Sargon.Assets;
 
 namespace Sargon.Utils {
 
@@ -10,7 +8,7 @@ namespace Sargon.Utils {
         private string directory = "";
 
         public BasicLoader(string path) {
-            this.directory = path;
+            this.directory = Ur.Filesystem.Folders.GetDirectory(path);
         }
 
         public event Action Complete;
@@ -33,7 +31,7 @@ namespace Sargon.Utils {
 
             lq.LoadingUpdate += (args) => {
                 var loader = args.Sender;
-                switch(args.State) {
+                switch (args.State) {
                     case Ur.Filesystem.LoadStates.Completed:
                         Game.Log("[COMPLETE] : " + args.Sender.Path, ConsoleColor.DarkCyan);
                         Context.Assets.HandleAssetLoaded(args.Sender, args.Sender.LoadedAssetItem);
@@ -42,10 +40,10 @@ namespace Sargon.Utils {
                         Game.Log("[  FAIL  ] : " + args.Sender.Path, ConsoleColor.DarkRed);
                         break;
                 }
-            } ;
+            };
 
             lq.AllTasksComplete += Complete;
             lq.Execute();
-        }   
+        }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Sargon.Assets {
 
@@ -21,6 +20,6 @@ namespace Sargon.Assets {
         void StartLoad();
         void Unload();
 
-        
+
     }
 }

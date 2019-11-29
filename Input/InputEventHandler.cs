@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using SFML.Graphics;
+﻿using SFML.Graphics;
 
 namespace Sargon.Input {
     internal class InputEventHandler {
@@ -32,12 +30,12 @@ namespace Sargon.Input {
             Game.Context.Input.SetKeyStatus(Keys.Mouse1 + (int)e.Button, Key.Status.Raised);
         }
 
-        private void MouseButtonPressed(object sender, SFML.Window.MouseButtonEventArgs e) {            
-            Game.Context.Input.SetKeyStatus(Keys.Mouse1 + (int)e.Button, Key.Status.Pressed);           
+        private void MouseButtonPressed(object sender, SFML.Window.MouseButtonEventArgs e) {
+            Game.Context.Input.SetKeyStatus(Keys.Mouse1 + (int)e.Button, Key.Status.Pressed);
         }
 
         private void KeyReleased(object sender, SFML.Window.KeyEventArgs e) {
-            var key = Game.Context.Input.Decode(e.Code);            
+            var key = Game.Context.Input.Decode(e.Code);
             Game.Context.Input.SetKeyStatus(key, Key.Status.Raised);
         }
 

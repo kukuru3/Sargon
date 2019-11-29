@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using Sargon.Assets;
-using Ur.Geometry;
+﻿using Sargon.Assets;
 using Ur;
+using Ur.Geometry;
 using IntRect = Ur.Grid.Rect;
 
 namespace Sargon.Graphics {
@@ -10,7 +8,7 @@ namespace Sargon.Graphics {
 
         #region Fields
         private float z;
-        private bool  visible = true;
+        private bool visible = true;
         private IntRect? sourceImageSubrect;
         private Vector2? overriddenAnchor;
         internal SFML.Graphics.Sprite nativeSprite;
@@ -20,11 +18,11 @@ namespace Sargon.Graphics {
         public SpriteDefinition Source { get; set; }
         public Vector2 Scale { get; set; } = Vector2.One;
         public Vector2 Position { get; set; }
-        public float   Rotation { get; set; } = 0;
-        public Canvas  OnCanvas { get; set; } = null;
-        public Color   Color    { get; set; } = Color.White;
+        public float Rotation { get; set; } = 0;
+        public Canvas OnCanvas { get; set; } = null;
+        public Color Color { get; set; } = Color.White;
 
-        public bool Visible     {
+        public bool Visible {
             get => visible;
             set { visible = value; OnCanvas?.MarkMemberDepthAsDirty(); }
         }
@@ -54,7 +52,7 @@ namespace Sargon.Graphics {
             var r = sourceImageSubrect ?? Source.Rect;
             this.Scale = new Vector2(w / r.Width, h / r.Height);
         }
-        
+
         public void Display() {
             var context = OnCanvas?.Pipeline.Context;
             if (context == null) return;

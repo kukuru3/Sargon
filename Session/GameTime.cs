@@ -5,27 +5,27 @@ namespace Sargon.Session {
     public class GameTime {
 
         const int DEFAULT_TICK_FREQUENCY = 20;
-        const int MAX_TICKS_PER_LOOP     = 5;
-        const int DEFAULT_FRAMERATE      = 60;
-        const bool DEFAULT_VSYNC         = false;
-        
-        private Stopwatch Stopwatch;        
-        private int    tickFrequency = DEFAULT_TICK_FREQUENCY;
+        const int MAX_TICKS_PER_LOOP = 5;
+        const int DEFAULT_FRAMERATE = 60;
+        const bool DEFAULT_VSYNC = false;
+
+        private Stopwatch Stopwatch;
+        private int tickFrequency = DEFAULT_TICK_FREQUENCY;
         private long SystemTicksPerGameTick = TimeSpan.TicksPerSecond / DEFAULT_TICK_FREQUENCY;
         private TimeSpan timeOfPreviousTick;
-        
-        public   int     ScreenFramerateLimit   { get; private set; }       = DEFAULT_FRAMERATE;
-        public   bool    ScreenVSync            { get; private set; }       = DEFAULT_VSYNC;
 
-        public float     ElapsedTime            => (float)Stopwatch.Elapsed.TotalSeconds;
-        public float     Interpolation          { get; private set; }
+        public int ScreenFramerateLimit { get; private set; } = DEFAULT_FRAMERATE;
+        public bool ScreenVSync { get; private set; } = DEFAULT_VSYNC;
 
-        internal long    FrameCounter           { get; private set; }
-        internal long    TickCounter            { get; private set; }        
-                
+        public float ElapsedTime => (float)Stopwatch.Elapsed.TotalSeconds;
+        public float Interpolation { get; private set; }
+
+        internal long FrameCounter { get; private set; }
+        internal long TickCounter { get; private set; }
+
         internal void SetTickFrequency(int ticks) {
             this.tickFrequency = ticks;
-            SystemTicksPerGameTick = (TimeSpan.TicksPerSecond / ticks);            
+            SystemTicksPerGameTick = (TimeSpan.TicksPerSecond / ticks);
         }
 
         internal int GetTickFrequency() {
@@ -49,24 +49,24 @@ namespace Sargon.Session {
         }
 
         public void Advance() {
-            var elapsedTime = Stopwatch.Elapsed;            
+            var elapsedTime = Stopwatch.Elapsed;
             var loopCounter = 0;
-            while ((elapsedTime - timeOfPreviousTick).Ticks > SystemTicksPerGameTick) {                
+            while ((elapsedTime - timeOfPreviousTick).Ticks > SystemTicksPerGameTick) {
                 timeOfPreviousTick += new TimeSpan(SystemTicksPerGameTick);
                 loopCounter++;
                 TickCounter++;
                 ExecuteTick();
-                if (loopCounter > MAX_TICKS_PER_LOOP) break;                
+                if (loopCounter > MAX_TICKS_PER_LOOP) break;
             }
             FrameCounter++;
-            Interpolation = Ur.Numbers.Choke( 
+            Interpolation = Ur.Numbers.Choke(
                 (float)(elapsedTime - timeOfPreviousTick).Ticks / SystemTicksPerGameTick, 0f, 1f
             );
 
         }
 
         private double recordedFrameTime;
-        
+
         internal void CaptureFrameTime() {
             var el = Stopwatch.Elapsed.TotalSeconds;
             FrameTime = (float)(el - recordedFrameTime);

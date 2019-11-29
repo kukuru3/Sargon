@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace Sargon.Graphics {
 
-namespace Sargon.Graphics {
-                    
     public interface IPipelineStep {
         float Zed { get; }
         bool DoesRender { get; }

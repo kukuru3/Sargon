@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using Ur.Grid;
 
 namespace Sargon.Assets.Loaders {
     [Ur.Filesystem.UrLoader("png|bmp|jpg")]
@@ -11,7 +9,7 @@ namespace Sargon.Assets.Loaders {
             UpdateState(Ur.Filesystem.LoadStates.Started);
             var texture = new Texture(Path);
             base.LoadedAssetItem = texture;
-            switch(texture.LoadState) {
+            switch (texture.LoadState) {
                 case LoadStates.Active: UpdateState(Ur.Filesystem.LoadStates.Completed); break;
                 case LoadStates.Failed: UpdateState(Ur.Filesystem.LoadStates.Failure); break;
             }
@@ -23,7 +21,8 @@ namespace Sargon.Assets.Loaders {
             if (File.Exists(extraPath)) {
                 var text = File.ReadAllText(extraPath);
                 var input = new StringReader(text);
-                var deserializer = new YamlDotNet.Serialization.Deserializer();
+#if YAML
+                var deserializer = new YamlDotNet.Serialization.Deserializer();                
                 var texMetadata = deserializer.Deserialize<TextureMetadataLoader>(input);
                 if (texMetadata != null) {
                     if (texMetadata.sprites != null) {
@@ -50,11 +49,12 @@ namespace Sargon.Assets.Loaders {
                         }
                     }
                 }
+#endif
             }
-        }   
+        }
 
         private class TextureMetadataLoader {
-            public Dictionary<string, int[]> sprites { get; set; }            
+            public Dictionary<string, int[]> sprites { get; set; }
             public GridDef grid { get; set; }
 
             public class GridDef {
@@ -65,6 +65,6 @@ namespace Sargon.Assets.Loaders {
 
         }
 
-        
+
     }
 }

@@ -14,27 +14,27 @@ namespace Sargon.Session {
 
         internal Game GameInstance { get; }
         #endregion
-        
+
         #region Ctor
         public StateManager(Game gameInstance) {
             allMethods = new List<MethodDef>();
             addedStates = new Queue<State>();
             removedStates = new Queue<State>();
-            GameInstance  = gameInstance;
-        } 
+            GameInstance = gameInstance;
+        }
         #endregion
-        
+
         #region State addition and removal
 
         internal void FlushStateQueues() {
-            while(addedStates.Count > 0) DoAddState(addedStates.Dequeue());
-            while(removedStates.Count > 0) DoRemoveState(removedStates.Dequeue());
+            while (addedStates.Count > 0) DoAddState(addedStates.Dequeue());
+            while (removedStates.Count > 0) DoRemoveState(removedStates.Dequeue());
         }
 
         private void DoAddState(State state) {
             state.Manager = this;
             state.Initialize();
-            GameInstance.Context.Logger.Add("initializing state : " + state.GetType().Name, ConsoleColor.DarkGreen);
+            GameInstance.Context.Logger.Add("initializing state : " + state.Name, ConsoleColor.DarkGreen);
         }
 
         private void DoRemoveState(State state) {
@@ -84,17 +84,17 @@ namespace Sargon.Session {
         void RebuildCallList() {
             callList = new Dictionary<Hooks, List<Action>>();
             var tempList = new Dictionary<Hooks, List<MethodDef>>();
-            
+
             foreach (var hook in Enums.IterateValues<Hooks>()) {
                 tempList.Add(hook, new List<MethodDef>());
             }
 
             foreach (var item in allMethods) tempList[item.Hook].Add(item);
             foreach (var key in tempList.Keys) {
-                tempList[key].Sort((a,b) => Math.Sign(a.Priority - b.Priority));
+                tempList[key].Sort((a, b) => Math.Sign(a.Priority - b.Priority));
                 callList[key] = tempList[key].Select(md => md.Method).ToList();
             }
-            
+
         }
 
         #endregion
@@ -109,7 +109,7 @@ namespace Sargon.Session {
                 Method = method;
                 Priority = priority;
             }
-        } 
+        }
         #endregion
     }
 }

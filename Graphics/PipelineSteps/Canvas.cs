@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Sargon.Graphics {
     public class Canvas : BasicPipelineStep {
-            
+
         #region Fields
         private List<IRenderable> activeItems;
         private List<IRenderable> finalDrawList;
         //private IOrderedEnumerable<IRenderable> finalDrawList;
-        private HashSet<IRenderable> flaggedForRemoval;        
-        private bool  isRenderablesOrderDirty;
+        private HashSet<IRenderable> flaggedForRemoval;
+        private bool isRenderablesOrderDirty;
         #endregion
 
         #region Public properties
@@ -29,14 +28,14 @@ namespace Sargon.Graphics {
 
         #region Public interface
 
-        public void Add(IRenderable item) { 
-            activeItems.Add(item); 
+        public void Add(IRenderable item) {
+            activeItems.Add(item);
             item.OnCanvas = this;
             isRenderablesOrderDirty = true;
         }
 
         public void Remove(IRenderable item) { flaggedForRemoval.Add(item); item.OnCanvas = null; }
-        
+
         public void Clear() { foreach (var item in activeItems) item.OnCanvas = null; activeItems.Clear(); flaggedForRemoval.Clear(); }
 
         public override void Display() {
@@ -57,7 +56,7 @@ namespace Sargon.Graphics {
         protected virtual void FinalizeDisplay() {
             RemoveFlaggedRenderables();
         }
-                                                            
+
         protected virtual void DrawRenderables() {
             foreach (var renderable in finalDrawList) renderable.Display();
         }
@@ -82,8 +81,8 @@ namespace Sargon.Graphics {
             activeItems.RemoveAll(rr => flaggedForRemoval.Contains(rr));
             foreach (var item in flaggedForRemoval) item.OnCanvas = null;
             flaggedForRemoval.Clear();
-        } 
+        }
         #endregion
-            
+
     }
 }

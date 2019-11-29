@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using SFK = SFML.Window.Keyboard.Key;
+﻿using System.Linq;
 using Ur;
-using System.Linq;
+using SFK = SFML.Window.Keyboard.Key;
 
 namespace Sargon.Input {
     internal static class Converter {
@@ -12,7 +10,7 @@ namespace Sargon.Input {
             var maxValue = Enums.IterateValues<Keys>().Max();
             var table = new Keys[(int)maxValue + 1];
 
-            for ( Keys i = 0; i <= maxValue; i++) table[(int)i] = Keys.NoKey;
+            for (Keys i = 0; i <= maxValue; i++) table[(int)i] = Keys.NoKey;
 
             for (SFK key = SFK.A; key <= SFK.Z; key++) table[(int)key] = (Keys)((int)Keys.A + (int)(key - SFK.A));
             for (SFK key = SFK.Num0; key <= SFK.Num9; key++) table[(int)key] = (Keys)((int)Keys.Alpha0 + (int)(key - SFK.Num0));
@@ -43,8 +41,8 @@ namespace Sargon.Input {
             table[(int)SFK.Numpad6] = Keys.Pad6;
             table[(int)SFK.Numpad7] = Keys.Pad7;
             table[(int)SFK.Numpad8] = Keys.Pad8;
-            table[(int)SFK.Numpad9] = Keys.Pad9;         
-            table[(int)SFK.Add]     = Keys.PadPlus;
+            table[(int)SFK.Numpad9] = Keys.Pad9;
+            table[(int)SFK.Add] = Keys.PadPlus;
             table[(int)SFK.Subtract] = Keys.PadMinus;
 
             table[(int)SFK.LBracket] = Keys.LeftBracket;
@@ -57,7 +55,7 @@ namespace Sargon.Input {
             table[(int)SFK.BackSlash] = Keys.Backslash;
             table[(int)SFK.Equal] = Keys.Equals;
             // table[(int)SFK.Subtract] = Keys.Subtract;                                           
-            
+
             return table;
         }
 

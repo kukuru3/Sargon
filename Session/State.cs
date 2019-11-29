@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Sargon {
     public abstract class State {
@@ -10,6 +9,8 @@ namespace Sargon {
 
         public Game Game => Manager.GameInstance;
         public GameContext Context => Manager.GameInstance.Context;
+
+        public virtual string Name => GetType().FullName;
 
         protected internal void Register(Hooks hook, Action a, int priority = 0) {
             Manager.RegisterHook(hook, a, priority);
@@ -22,7 +23,7 @@ namespace Sargon {
 
         /// <summary> Called by Sargon after all hooks have been unregistered.
         /// There is no need to remove your hooks explicitly here.</summary>
-        protected internal virtual void Cleanup()    { }
+        protected internal virtual void Cleanup() { }
 
         /// <summary> Called by Sargon when state is initialized. 
         /// Hooks must be registered here.</summary>

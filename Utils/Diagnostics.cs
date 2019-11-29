@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Sargon.Utils {
+﻿namespace Sargon.Utils {
     public class Diagnostics {
 
         internal int SpritesDrawn { get; set; }
@@ -12,7 +6,7 @@ namespace Sargon.Utils {
 
         public int SpritesDrawnLastFrame { get; private set; }
         public int TextCharsDrawnLastFrame { get; private set; }
-           
+
 
         internal void ResetFrame() {
             SpritesDrawnLastFrame = SpritesDrawn;
@@ -22,7 +16,7 @@ namespace Sargon.Utils {
         }
 
         internal void FinishFrame() {
-            
+
         }
     }
 }

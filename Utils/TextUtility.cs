@@ -1,8 +1,6 @@
-﻿using System;
+﻿using SFML.Graphics;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using SFML.Graphics;
 
 namespace Sargon {
     public static class TextUtility {
@@ -19,8 +17,8 @@ namespace Sargon {
             var lines = new List<string>();
             var currentLine = new StringBuilder("");
             if (font == null) font = GameContext.Current.Assets.DefaultFont;
-            var propObject = new Text("", font.NativeFont, (uint)characterSize);
-                        
+            var propObject = new Text("", (font ?? GameContext.Current.Assets.DefaultFont)?.NativeFont, (uint)characterSize);
+
             while (cursor < source.Length) {
                 var old = cursor;
                 CopyWord(source, ref cursor, currentLine);
@@ -43,7 +41,7 @@ namespace Sargon {
             var at = source.IndexOfAny(WordSeparators, startingAt + 1);
             if (at < 0) at = source.Length;
             destination.Append(source.Substring(startingAt, at - startingAt));
-            startingAt = at;            
+            startingAt = at;
         }
 
         static private void LineBreakBackTrack(StringBuilder text, out string remaining) {
@@ -51,7 +49,7 @@ namespace Sargon {
             var str = text.ToString();
             var at = str.LastIndexOfAny(WordSeparators);
             if (at >= 0) {
-                text.Remove(at+1, text.Length - at - 1);
+                text.Remove(at + 1, text.Length - at - 1);
                 remaining = str.Substring(at + 1);
             }
         }

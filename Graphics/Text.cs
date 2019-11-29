@@ -1,16 +1,15 @@
-﻿using System;
+﻿using SFML.Graphics;
+using System;
 using System.Collections.Generic;
-using System.Text;
-using SFML.Graphics;
 using Ur;
 using Ur.Geometry;
 using SFMLText = SFML.Graphics.Text;
 
 namespace Sargon.Graphics {
     public class Text : IRenderable {
-               
+
         public enum Anchors {
-            TopLeft, 
+            TopLeft,
             TopCenter,
             TopRight,
 
@@ -27,11 +26,11 @@ namespace Sargon.Graphics {
         private float z = 0f;
         private Anchors anchor;
         private Vector2 scale;
-        private Rect    rect;
+        private Rect rect;
         private Assets.Font font;
-        private int     charsize;
-        private bool    isDirty;
-        private string  text;
+        private int charsize;
+        private bool isDirty;
+        private string text;
 
         private List<SFMLText> sprites;
         #endregion
@@ -46,7 +45,7 @@ namespace Sargon.Graphics {
 
         internal IEnumerable<SFMLText> TextChunks => sprites;
 
-        
+
 
         public Anchors Anchor {
             get => anchor;
@@ -64,7 +63,7 @@ namespace Sargon.Graphics {
         }
 
         public Assets.Font Font {
-            get => font;
+            get => font ?? Sargon.GameContext.Current.Assets.DefaultFont;
             set { font = value; MarkDirty(); }
         }
 
@@ -99,7 +98,7 @@ namespace Sargon.Graphics {
             this.rect = Rect.FromBounds(0, 0, 500, 500);
         }
         #endregion
-        
+
         #region Public stuff
         public void Display() {
             if (isDirty) {
@@ -118,7 +117,7 @@ namespace Sargon.Graphics {
                 context.Renderer.RenderText(this, sprite);
             }
         }
-            
+
         public void Dispose() {
             foreach (var item in this.sprites) item.Dispose();
             sprites.Clear();
@@ -148,6 +147,7 @@ namespace Sargon.Graphics {
 
             sprites.Clear();
 
+            if (Font?.NativeFont == null) return;
 
             var paragraphs = text.Split(TextUtility.LineSeparators);
             var lines = new List<string>();
@@ -210,7 +210,7 @@ namespace Sargon.Graphics {
             var factor = 0.5f * ((int)Anchor / 3);
             var y0 = (rectHeight - totalTextHeight) * factor;
             return y0 + lineIndex * ls;
-        } 
+        }
         #endregion
 
 

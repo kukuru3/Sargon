@@ -2,22 +2,22 @@
 namespace Sargon {
     public class GameContext {
 
-        public   Input.Manager              Input    { get; internal set; }
-        public   Graphics.Pipeline          Pipeline { get; internal set; }
-        public   Utils.Diagnostics Diagnostics { get; internal set; }
-        
-        public   Game GameInstance                       { get; }
-        public   Utils.Logger               Logger       { get; }
+        public Input.Manager Input { get; internal set; }
+        public Graphics.Pipeline Pipeline { get; internal set; }
+        public Utils.Diagnostics Diagnostics { get; internal set; }
+
+        public Game GameInstance { get; }
+        public Utils.Logger Logger { get; }
 
 
-        internal Input.InputEventHandler    InputHandler { get; }
-        internal StateManager               StateManager { get; }
-        internal Graphics.Renderer          Renderer     { get; }
-        internal BaseState                  BaseState    { get; set; }
+        internal Input.InputEventHandler InputHandler { get; }
+        internal StateManager StateManager { get; }
+        internal Graphics.Renderer Renderer { get; }
+        internal BaseState BaseState { get; set; }
 
-        public Graphics.Screen            Screen       { get;  }
+        public Graphics.Screen Screen { get; }
 
-        public Assets.AssetManager          Assets       { get; set; }
+        public Assets.AssetManager Assets { get; set; }
 
         static internal GameContext Current { get; private set; }
 
@@ -27,11 +27,11 @@ namespace Sargon {
             GameInstance = sgame;
             StateManager = new StateManager(sgame);
             InputHandler = new Input.InputEventHandler(sgame);
-            Diagnostics  = new Utils.Diagnostics();
-            Logger       = new Utils.Logger();
-            Assets       = new Assets.AssetManager();
-            Renderer     = new Graphics.Renderer();
-            Screen       = new Graphics.Screen(sgame);
+            Diagnostics = new Utils.Diagnostics();
+            Logger = new Utils.Logger();
+            Assets = new Assets.AssetManager();
+            Renderer = new Graphics.Renderer();
+            Screen = new Graphics.Screen(sgame);
             Current = this;
         }
     }

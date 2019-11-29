@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Sargon.Graphics.PipelineSteps {
+﻿namespace Sargon.Graphics.PipelineSteps {
     public class BackgroundColorSetter : BasicPipelineStep {
         Ur.Color Color { get; set; }
         public BackgroundColorSetter(Pipeline p, Ur.Color color) : base(p) {

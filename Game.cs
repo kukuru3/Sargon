@@ -1,6 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using SFML.Window;
+﻿using SFML.Window;
+using System;
 namespace Sargon {
     /// <summary> A basic Sargon game instance.</summary>
     public class Game {
@@ -14,13 +13,13 @@ namespace Sargon {
         #endregion
 
         #region Fields
-        
+
         #endregion
 
         #region Properties - public
         public string Title { get; set; }
 
-        public int    TicksPerSecond {
+        public int TicksPerSecond {
             get { return Timer.GetTickFrequency(); }
             set { Timer.SetTickFrequency(value); }
         }
@@ -29,7 +28,7 @@ namespace Sargon {
         public bool IsRunning { get; private set; } = false;
 
         public bool HasFocus { get; private set; } = true;
-        
+
         public GameContext Context { get; private set; }
 
         public float FrameTime => Timer.FrameTime;
@@ -39,19 +38,19 @@ namespace Sargon {
         #endregion
 
         #region Properties - private, internal
-        internal  SFML.Graphics.RenderWindow MainWindow { get; private set;}
-        internal SFML.Graphics.RenderTarget  RenderTarget { get; set; }
+        internal SFML.Graphics.RenderWindow MainWindow { get; private set; }
+        internal SFML.Graphics.RenderTarget RenderTarget { get; set; }
         internal Session.GameTime Timer { get; }
         internal ResolutionMode CurrentMode { get; private set; }
         #endregion
 
         #region Constructor
         public Game() {
-            CurrentMode = new ResolutionMode(800, 600, WindowStyle.Windowed);           
-            Context = new GameContext(this);            
+            CurrentMode = new ResolutionMode(800, 600, WindowStyle.Windowed);
+            Context = new GameContext(this);
             Timer = new Session.GameTime();
-            CreateInternalStates();          
-        } 
+            CreateInternalStates();
+        }
         #endregion
 
         #region Public interface
@@ -69,20 +68,19 @@ namespace Sargon {
         public void RemoveState(State s) {
             Context.StateManager.RemoveState(s);
         }
-         
+
         /// <summary> Explicitly add a callback to one of the Sargon game hooks </summary>        
         public void AddCallback(Hooks atHook, Action toExecute, int priority = 0) {
             Context.BaseState.Register(atHook, toExecute);
         }
 
         public void Run() {
-            
             CreateSFMLWindow();
 
             RegisterWindowEvents();
-            
+
             SetupTimers();
-            
+
             Context.StateManager.FlushStateQueues();
 
             Context.StateManager.Trigger(Hooks.Initialize);
@@ -90,7 +88,6 @@ namespace Sargon {
             IsRunning = true;
 
             ExecuteMainLoop();
-
         }
 
         /// <summary> Call this if you want to end the execution of the app.</summary>
@@ -109,11 +106,10 @@ namespace Sargon {
         }
 
         #endregion
-        
+
         #region GUTS
 
         private void ExecuteMainLoop() {
-
             Timer.Ticked += ExecuteTick;
 
             while (MainWindow.IsOpen) {
@@ -124,9 +120,8 @@ namespace Sargon {
                 Context.Diagnostics.FinishFrame();
             }
         }
-           
+
         private void ExecuteFrame() {
-            
             Context.StateManager.Trigger(Hooks.Frame);
             Context.StateManager.FlushStateQueues();
             Timer.CaptureFrameTime();
@@ -137,17 +132,15 @@ namespace Sargon {
         }
 
         private void RegisterWindowEvents() {
-
             MainWindow.SetKeyRepeatEnabled(false);
 
             MainWindow.Closed += HandleClosed;
             MainWindow.LostFocus += HandleLostFocus;
             MainWindow.GainedFocus += HandleGainedFocus;
-            
-            Context.InputHandler.RegisterEvents(MainWindow);
 
+            Context.InputHandler.RegisterEvents(MainWindow);
         }
-        
+
         private void CreateSFMLWindow() {
             if (MainWindow != null) {
                 throw new InvalidOperationException("Cannot recreate SFML window once created!");
@@ -173,21 +166,20 @@ namespace Sargon {
             Context.BaseState = new Session.BaseState();
             AddState(Context.BaseState);
 
-            Context.Input = new Input.Manager();                    
+            Context.Input = new Input.Manager();
             AddState(Context.Input);
 
             Context.Pipeline = new Graphics.Pipeline();
             AddState(Context.Pipeline);
 
             Context.StateManager.FlushStateQueues();
+        }
 
-        } 
-        
         private void Cleanup() {
-            MainWindow.Closed       -= HandleClosed;
-            MainWindow.LostFocus    -= HandleLostFocus;
-            MainWindow.GainedFocus  -= HandleGainedFocus;
-            Timer.Ticked            -= ExecuteTick;
+            MainWindow.Closed -= HandleClosed;
+            MainWindow.LostFocus -= HandleLostFocus;
+            MainWindow.GainedFocus -= HandleGainedFocus;
+            Timer.Ticked -= ExecuteTick;
         }
 
         #endregion
@@ -195,7 +187,7 @@ namespace Sargon {
         #region Private event handlerss
 
         private void HandleClosed(object sender, EventArgs e) {
-            Context.StateManager.Trigger(Hooks.End);            
+            Context.StateManager.Trigger(Hooks.End);
             Cleanup();
             MainWindow.Close();
         }
@@ -222,7 +214,7 @@ namespace Sargon {
                 Height = height;
                 Style = style;
             }
-        } 
+        }
         #endregion
 
     }

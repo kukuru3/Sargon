@@ -1,29 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Sargon.Assets {
     public class AssetManager {
-        
+
         #region Lookup lists and dictionaries
         private List<SpriteDefinition> allSpriteDefinitions;
         private Dictionary<Texture, List<SpriteDefinition>> spriteDefsByTexture;
         private Dictionary<string, SpriteDefinition> spriteDefsByStringID;
-        private Dictionary<Texture, string> textureIdentitiesLookup; 
-        private Dictionary<string, Font>    fontsCachedByID;
+        private Dictionary<Texture, string> textureIdentitiesLookup;
+        private Dictionary<string, Font> fontsCachedByID;
         #endregion
 
-        public int DefaultCharacterSize { get; set; } = 12;
+        public int DefaultCharacterSize { get; set; } = 22;
         public Font DefaultFont { get; set; }
 
         public IEnumerable<Font> AllFonts => fontsCachedByID.Values.OrderBy(font => font.Path);
-        
+
         #region Ctor
         public AssetManager() {
             allSpriteDefinitions = new List<SpriteDefinition>();
             spriteDefsByTexture = new Dictionary<Texture, List<SpriteDefinition>>();
             spriteDefsByStringID = new Dictionary<string, SpriteDefinition>();
-            fontsCachedByID         = new Dictionary<string, Font>();
+            fontsCachedByID = new Dictionary<string, Font>();
             textureIdentitiesLookup = new Dictionary<Texture, string>();
         }
         #endregion
@@ -85,7 +84,7 @@ namespace Sargon.Assets {
         public SpriteDefinition Find(string totalID) {
             spriteDefsByStringID.TryGetValue(totalID, out var value);
             return value;
-        } 
+        }
         #endregion
 
         public Font GetFont(string assetIdentity) {

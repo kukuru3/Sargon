@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Sargon.Graphics {
@@ -21,7 +20,7 @@ namespace Sargon.Graphics {
         internal Pipeline() {
             IsInternal = true;
             steps = new List<IPipelineStep>();
-        } 
+        }
         #endregion
 
         protected internal override void Initialize() {
@@ -43,10 +42,10 @@ namespace Sargon.Graphics {
             foreach (var step in steps) if (step.DoesRender) ExecuteStep(step);
 
             Context.GameInstance.MainWindow.Display();
-            
+
         }
 
-        private void ExecuteStep(IPipelineStep step) {            
+        private void ExecuteStep(IPipelineStep step) {
             step.Display();
         }
 

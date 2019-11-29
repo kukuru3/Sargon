@@ -1,23 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Sargon.Graphics;
+using System;
 using Int2 = Ur.Grid.Coords;
-using Sargon.Graphics;
 
-namespace Sargon.Assets 
-{
-    public sealed class Texture : IAsset
-    {
+namespace Sargon.Assets {
+    public sealed class Texture : IAsset {
         #region Fields
         Int2 Size;
         private SFML.Graphics.Texture nativeTexture;
-        private SFML.Graphics.RenderTexture nativeRenderTexture; 
+        private SFML.Graphics.RenderTexture nativeRenderTexture;
         #endregion
 
         #region Properties       
-        public LoadStates   LoadState   { get; private set; }
-        public bool         IsNative    { get; private set; }
-        public string       Path        { get; private set; }
-        public bool         IsRenderTex { get; private set; } 
+        public LoadStates LoadState { get; private set; }
+        public bool IsNative { get; private set; }
+        public string Path { get; private set; }
+        public bool IsRenderTex { get; private set; }
         #endregion
 
         #region Property getters
@@ -28,20 +25,20 @@ namespace Sargon.Assets
 
         #region Ctors
         public Texture(string filepath) {
-            Path = filepath;           
+            Path = filepath;
             IsRenderTex = false;
             StartLoad();
         }
 
-        internal Texture(int width, int height, Ur.Color color) {           
+        internal Texture(int width, int height, Ur.Color color) {
             this.Path = "";
             this.nativeTexture = null;
             this.nativeRenderTexture = new SFML.Graphics.RenderTexture((uint)width, (uint)height, false);
             this.nativeRenderTexture.Clear(color.ToSFMLColor());
-            this.Size = new Int2(width, height);            
+            this.Size = new Int2(width, height);
             IsRenderTex = true;
             StartLoad();
-        } 
+        }
         #endregion
 
         #region Public interface
@@ -88,7 +85,7 @@ namespace Sargon.Assets
         public void Dispose() {
             nativeTexture.Dispose();
             nativeRenderTexture?.Dispose();
-        } 
+        }
         #endregion
 
     }

@@ -1,14 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace Sargon.Assets {
-    public class Font : IAsset {   
+    public class Font : IAsset {
 
-        public Font(string filePath) {            
+        public Font(string filePath) {
             Path = filePath;
             StartLoad();
         }
-                                                      
+
         internal SFML.Graphics.Font NativeFont { get; private set; }
 
         public string Path { get; }
@@ -16,7 +15,7 @@ namespace Sargon.Assets {
         public LoadStates LoadState { get; private set; }
 
         public void StartLoad() {
-            
+
             if (NativeFont != null) Unload();
 
             LoadState = LoadStates.Loading;
@@ -26,7 +25,7 @@ namespace Sargon.Assets {
             } catch (Exception) {
                 LoadState = LoadStates.Failed;
             }
-            
+
             LoadState = LoadStates.Active;
         }
 
