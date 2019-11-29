@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Sargon</RootNamespace>
     <AssemblyName>Sargon2</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -107,7 +107,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Ur\Ur.csproj">
-      <Project>{dcf882ef-47b0-4770-850d-8cd5237855a9}</Project>
+      <Project>{799bb64e-8625-4cfd-aebb-3b72fb91c3ac}</Project>
       <Name>Ur</Name>
     </ProjectReference>
   </ItemGroup>

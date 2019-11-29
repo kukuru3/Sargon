@@ -9,7 +9,7 @@ namespace Sargon.Input {
 
         internal static Keys[] ConstructSFMLKeyMap() {
 
-            var maxValue = Enums.IterateValues<Keys>().Max();            
+            var maxValue = Enums.IterateValues<Keys>().Max();
             var table = new Keys[(int)maxValue + 1];
 
             for ( Keys i = 0; i <= maxValue; i++) table[(int)i] = Keys.NoKey;
@@ -46,6 +46,17 @@ namespace Sargon.Input {
             table[(int)SFK.Numpad9] = Keys.Pad9;         
             table[(int)SFK.Add]     = Keys.PadPlus;
             table[(int)SFK.Subtract] = Keys.PadMinus;
+
+            table[(int)SFK.LBracket] = Keys.LeftBracket;
+            table[(int)SFK.RBracket] = Keys.RightBracket;
+            table[(int)SFK.SemiColon] = Keys.Semicolon;
+            table[(int)SFK.Quote] = Keys.Apostrophe;
+            table[(int)SFK.Comma] = Keys.Comma;
+            table[(int)SFK.Period] = Keys.Period;
+            table[(int)SFK.Slash] = Keys.Slash;
+            table[(int)SFK.BackSlash] = Keys.Backslash;
+            table[(int)SFK.Equal] = Keys.Equals;
+            // table[(int)SFK.Subtract] = Keys.Subtract;                                           
             
             return table;
         }

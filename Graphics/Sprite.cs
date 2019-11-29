@@ -12,7 +12,7 @@ namespace Sargon.Graphics {
         private float z;
         private bool  visible = true;
         private IntRect? sourceImageSubrect;
-        private Ur.Grid.Coords? overriddenAnchor;
+        private Vector2? overriddenAnchor;
         internal SFML.Graphics.Sprite nativeSprite;
         #endregion
 
@@ -32,7 +32,7 @@ namespace Sargon.Graphics {
         public float Zed { get { return z; } set { if (z.Approximately(value)) return; z = value; OnCanvas?.MarkMemberDepthAsDirty(); } }
 
         public IntRect TextureSubrect => sourceImageSubrect ?? Source.Rect;
-        public Ur.Grid.Coords Anchor => overriddenAnchor ?? Source.Anchor;
+        public Vector2 Anchor => overriddenAnchor ?? Source.Anchor;
 
         public bool Additive { get; set; }
         #endregion
@@ -44,35 +44,34 @@ namespace Sargon.Graphics {
         }
 
         public void Fit(Rect toRect) {
+            if (Source == null) return;
             var r = sourceImageSubrect ?? Source.Rect;
             this.Scale = new Vector2(toRect.W / r.Width, toRect.H / r.Height);
-            this.Position = new Vector2(toRect.X0, toRect.Y0);                        
+            this.Position = new Vector2(toRect.X0 + toRect.W * Anchor.x, toRect.Y0 + toRect.H * Anchor.y);
         }
+
         public void Fit(float w, float h) {
             var r = sourceImageSubrect ?? Source.Rect;
             this.Scale = new Vector2(w / r.Width, h / r.Height);
         }
         
         public void Display() {
-
             var context = OnCanvas?.Pipeline.Context;
             if (context == null) return;
 
             context.Diagnostics.SpritesDrawn++;
             context.Renderer.RenderSprite(this);
-            
-            
         }
 
         public void OverrideTextureSubrect(Ur.Grid.Rect rect) {
             sourceImageSubrect = rect;
         }
 
-        public void OverrideAnchor(Ur.Grid.Coords anchor) {
+        public void OverrideAnchor(Vector2 anchor) {
             overriddenAnchor = anchor;
         }
-        public void OverrideAnchor(int x, int y) {
-            overriddenAnchor = new Ur.Grid.Coords(x, y);
+        public void OverrideAnchor(float x, float y) {
+            overriddenAnchor = new Vector2(x, y);
         }
 
         public void ClearOverrides() {

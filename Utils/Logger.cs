@@ -31,7 +31,7 @@ namespace Sargon.Utils {
         }
 
         public void Clear() {
-            history.Clear();                        
+            history.Clear();
         }
         
         public IEnumerable<string> History => history.Select(h => h.Content);

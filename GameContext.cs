@@ -2,7 +2,7 @@
 namespace Sargon {
     public class GameContext {
 
-        public   Input.Manager              Input    { get; internal set; }        
+        public   Input.Manager              Input    { get; internal set; }
         public   Graphics.Pipeline          Pipeline { get; internal set; }
         public   Utils.Diagnostics Diagnostics { get; internal set; }
         
@@ -22,11 +22,11 @@ namespace Sargon {
         static internal GameContext Current { get; private set; }
 
         public GameTime Timer => GameInstance.Timer;
-                                    
+
         public GameContext(Game sgame) {
             GameInstance = sgame;
             StateManager = new StateManager(sgame);
-            InputHandler = new Input.InputEventHandler(sgame);           
+            InputHandler = new Input.InputEventHandler(sgame);
             Diagnostics  = new Utils.Diagnostics();
             Logger       = new Utils.Logger();
             Assets       = new Assets.AssetManager();
@@ -34,8 +34,5 @@ namespace Sargon {
             Screen       = new Graphics.Screen(sgame);
             Current = this;
         }
-
-
-
     }
 }

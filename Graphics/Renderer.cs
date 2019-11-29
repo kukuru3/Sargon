@@ -33,10 +33,10 @@ namespace Sargon.Graphics
             s.Color = sprite.Color.ToSFMLColor();
             s.Rotation = sprite.Rotation;
             s.Position = sprite.Position.ToSFMLVector2f();
-            s.Scale = sprite.Scale.ToSFMLVector2f();            
+            s.Scale = sprite.Scale.ToSFMLVector2f();
             s.TextureRect = sprite.TextureSubrect.ToSFMLIntRect();
             var anchor = sprite.Anchor;
-            s.Origin = new SFML.System.Vector2f(anchor.X, anchor.Y);
+            s.Origin = new SFML.System.Vector2f( s.TextureRect.Width * anchor.x, s.TextureRect.Height * anchor.y);
             // DO RENDER!
             blitState.BlendMode =  sprite.Additive ? BlendMode.Add : BlendMode.Alpha;
             

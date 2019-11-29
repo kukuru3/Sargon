@@ -26,7 +26,7 @@ namespace Sargon.Graphics {
             MarkMemberDepthAsDirty();
         }
         #endregion
-            
+
         #region Public interface
 
         public void Add(IRenderable item) { 
@@ -34,7 +34,7 @@ namespace Sargon.Graphics {
             item.OnCanvas = this;
             isRenderablesOrderDirty = true;
         }
-             
+
         public void Remove(IRenderable item) { flaggedForRemoval.Add(item); item.OnCanvas = null; }
         
         public void Clear() { foreach (var item in activeItems) item.OnCanvas = null; activeItems.Clear(); flaggedForRemoval.Clear(); }
@@ -57,7 +57,7 @@ namespace Sargon.Graphics {
         protected virtual void FinalizeDisplay() {
             RemoveFlaggedRenderables();
         }
-
+                                                            
         protected virtual void DrawRenderables() {
             foreach (var renderable in finalDrawList) renderable.Display();
         }

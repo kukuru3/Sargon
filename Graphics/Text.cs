@@ -24,7 +24,7 @@ namespace Sargon.Graphics {
         }
 
         #region Fields
-        private float z = 0f;       
+        private float z = 0f;
         private Anchors anchor;
         private Vector2 scale;
         private Rect    rect;
@@ -88,8 +88,6 @@ namespace Sargon.Graphics {
             MarkDirty();
         }
 
-        
-
         public Text(string text, Assets.Font font = null, int charSize = 0) : this() {
             Visible = true;
             this.text = text;
@@ -113,6 +111,10 @@ namespace Sargon.Graphics {
             foreach (var sprite in this.sprites) {
                 sprite.Color = this.Color.ToSFMLColor();
                 context.Diagnostics.TextCharactersDrawn += sprite.DisplayedString.Length;
+                sprite.Position = new SFML.System.Vector2f(
+                    (float)Math.Round(sprite.Position.X),
+                    (float)Math.Round(sprite.Position.Y)
+                );
                 context.Renderer.RenderText(this, sprite);
             }
         }

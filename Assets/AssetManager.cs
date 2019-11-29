@@ -15,6 +15,8 @@ namespace Sargon.Assets {
 
         public int DefaultCharacterSize { get; set; } = 12;
         public Font DefaultFont { get; set; }
+
+        public IEnumerable<Font> AllFonts => fontsCachedByID.Values.OrderBy(font => font.Path);
         
         #region Ctor
         public AssetManager() {
@@ -56,7 +58,7 @@ namespace Sargon.Assets {
         public Texture CreateDynamicTexture(int width, int height, string identity) {
             var t = new Texture(width, height, Ur.Color.White);
             textureIdentitiesLookup[t] = identity;
-            spriteDefsByStringID.Add(identity, t);            
+            spriteDefsByStringID.Add(identity, t);
             return t;
         }
 
@@ -98,7 +100,6 @@ namespace Sargon.Assets {
             raw = raw.Substring(0, extPos);
             return raw;
         }
-        
 
     }
 }

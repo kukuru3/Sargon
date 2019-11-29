@@ -138,7 +138,7 @@ namespace Sargon {
 
         private void RegisterWindowEvents() {
 
-            MainWindow.SetKeyRepeatEnabled(false);            
+            MainWindow.SetKeyRepeatEnabled(false);
 
             MainWindow.Closed += HandleClosed;
             MainWindow.LostFocus += HandleLostFocus;
@@ -227,7 +227,4 @@ namespace Sargon {
 
     }
 
-        
-    
-    
 }
