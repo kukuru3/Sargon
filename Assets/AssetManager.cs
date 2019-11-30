@@ -10,6 +10,7 @@ namespace Sargon.Assets {
         private Dictionary<string, SpriteDefinition> spriteDefsByStringID;
         private Dictionary<Texture, string> textureIdentitiesLookup;
         private Dictionary<string, Font> fontsCachedByID;
+        private Dictionary<string, Shader> shadersCachedByID;
         #endregion
 
         public int DefaultCharacterSize { get; set; } = 22;
@@ -23,16 +24,19 @@ namespace Sargon.Assets {
             spriteDefsByTexture = new Dictionary<Texture, List<SpriteDefinition>>();
             spriteDefsByStringID = new Dictionary<string, SpriteDefinition>();
             fontsCachedByID = new Dictionary<string, Font>();
+            shadersCachedByID = new Dictionary<string, Shader>();
             textureIdentitiesLookup = new Dictionary<Texture, string>();
         }
         #endregion
 
         #region Handlers
         internal void HandleAssetLoaded(Ur.Filesystem.Loader loader, object asset) {
-            if (asset is Texture) {
-                HandleTextureLoaded(loader, (Texture)asset);
-            } else if (asset is Font) {
-                HandleFontLoaded(loader, (Font)asset);
+            if (asset is Texture t) {
+                HandleTextureLoaded(loader, t);
+            } else if (asset is Font f) {
+                HandleFontLoaded(loader, f);
+            } else if (asset is Shader s) {
+                HandleShaderLoaded(loader, s);
             }
 
         }
@@ -42,6 +46,11 @@ namespace Sargon.Assets {
 
             var idkey = GetAssetIdentityKey(loader);
             fontsCachedByID.Add(idkey, asset);
+        }
+
+        private void HandleShaderLoaded(Ur.Filesystem.Loader loader, Shader asset) {
+            var idkey = GetAssetIdentityKey(loader);
+            shadersCachedByID.Add(idkey, asset);
         }
 
         private void HandleTextureLoaded(Ur.Filesystem.Loader loader, Texture asset) {
@@ -89,6 +98,11 @@ namespace Sargon.Assets {
 
         public Font GetFont(string assetIdentity) {
             fontsCachedByID.TryGetValue(assetIdentity, out var value);
+            return value;
+        }
+
+        public Shader GetShader(string assetIdentity) {
+            shadersCachedByID.TryGetValue(assetIdentity, out var value);
             return value;
         }
 

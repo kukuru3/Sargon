@@ -40,9 +40,6 @@ namespace Sargon.Graphics {
                 steps = steps.OrderBy(c => c.Zed).ToList();
             }
             foreach (var step in steps) if (step.DoesRender) ExecuteStep(step);
-
-            Context.GameInstance.MainWindow.Display();
-
         }
 
         private void ExecuteStep(IPipelineStep step) {

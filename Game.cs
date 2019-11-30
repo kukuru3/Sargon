@@ -69,9 +69,9 @@ namespace Sargon {
             Context.StateManager.RemoveState(s);
         }
 
-        /// <summary> Explicitly add a callback to one of the Sargon game hooks </summary>        
+        /// <summary> Explicitly add a callback to one of the Sargon game hooks </summary>
         public void AddCallback(Hooks atHook, Action toExecute, int priority = 0) {
-            Context.BaseState.Register(atHook, toExecute);
+            Context.BaseState.Register(atHook, toExecute, priority);
         }
 
         public void Run() {
@@ -118,6 +118,7 @@ namespace Sargon {
                 ExecuteFrame();
                 Timer.Advance();
                 Context.Diagnostics.FinishFrame();
+                MainWindow.Display();
             }
         }
 

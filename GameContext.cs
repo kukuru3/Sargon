@@ -32,6 +32,7 @@ namespace Sargon {
             Assets = new Assets.AssetManager();
             Renderer = new Graphics.Renderer();
             Screen = new Graphics.Screen(sgame);
+
             Current = this;
         }
     }

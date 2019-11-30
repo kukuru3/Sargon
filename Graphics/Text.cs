@@ -32,7 +32,7 @@ namespace Sargon.Graphics {
         private bool isDirty;
         private string text;
 
-        private List<SFMLText> sprites;
+        private List<SFMLText> lineObjects;
         #endregion
 
         #region Properties
@@ -40,12 +40,9 @@ namespace Sargon.Graphics {
         public Ur.Color Color { get; set; }
         public Canvas OnCanvas { get; set; }
         public bool Additive { get; set; }
+        public Effect Effect { get; set; }
 
         public float Zed { get { return z; } set { if (z.Approximately(value)) return; z = value; OnCanvas?.MarkMemberDepthAsDirty(); } }
-
-        internal IEnumerable<SFMLText> TextChunks => sprites;
-
-
 
         public Anchors Anchor {
             get => anchor;
@@ -82,7 +79,7 @@ namespace Sargon.Graphics {
 
         #region C-tors
         private Text() {
-            sprites = new List<SFMLText>();
+            lineObjects = new List<SFMLText>();
             Color = Ur.Color.White;
             MarkDirty();
         }
@@ -107,21 +104,21 @@ namespace Sargon.Graphics {
             }
             var context = OnCanvas?.Pipeline.Game.Context;
             if (context == null) return;
-            foreach (var sprite in this.sprites) {
+            foreach (var sprite in this.lineObjects) {
                 sprite.Color = this.Color.ToSFMLColor();
                 context.Diagnostics.TextCharactersDrawn += sprite.DisplayedString.Length;
                 sprite.Position = new SFML.System.Vector2f(
                     (float)Math.Round(sprite.Position.X),
                     (float)Math.Round(sprite.Position.Y)
                 );
+
                 context.Renderer.RenderText(this, sprite);
             }
         }
 
         public void Dispose() {
-            foreach (var item in this.sprites) item.Dispose();
-            sprites.Clear();
-
+            foreach (var item in this.lineObjects) item.Dispose();
+            lineObjects.Clear();
         }
 
         public Text Clone() {
@@ -143,9 +140,7 @@ namespace Sargon.Graphics {
         }
 
         private void RecalculateText() {
-            //var txt = new SFMLText(text, Font.NativeFont, (uint)CharacterSize);
-
-            sprites.Clear();
+            lineObjects.Clear();
 
             if (Font?.NativeFont == null) return;
 
@@ -165,20 +160,21 @@ namespace Sargon.Graphics {
                 index++;
                 var q = l.Trim();
                 if (q.Length > 0) {
-                    var lineTextObject = new SFMLText(q, Font.NativeFont);
-                    lineTextObject.CharacterSize = (uint)CharacterSize;
-                    lineTextObject.Scale = Scale.ToSFMLVector2f();
-                    var rect = lineTextObject.GetLocalBounds();
+                    var textLine = new SFMLText(q, Font.NativeFont);
+                    textLine.CharacterSize = (uint)CharacterSize;
+                    textLine.Scale = Scale.ToSFMLVector2f();
+                    var rect = textLine.GetLocalBounds();
 
                     var rw = rect.Width * Scale.x;
                     var rh = rect.Height * Scale.y;
 
                     // align:
-                    var xx = HorizontalAlign(lineTextObject, rw, this.rect.W);
-                    var yy = VerticalAlign(lineTextObject, rh, this.rect.H, index, lines.Count);
+                    var xx = HorizontalAlign(textLine, rw, this.rect.W);
+                    var yy = VerticalAlign(textLine, rh, this.rect.H, index, lines.Count);
 
                     // change position
-                    lineTextObject.Position = new SFML.System.Vector2f(this.rect.X0 + xx, this.rect.Y0 + yy);
+                    textLine.Position = new SFML.System.Vector2f(this.rect.X0 + xx, this.rect.Y0 + yy);
+
 
                     // recalculate bounds:
                     minX = Numbers.Min(minX, xx);
@@ -188,7 +184,7 @@ namespace Sargon.Graphics {
                     this.Bounds = Rect.FromBounds(minX, minY, maxX, maxY);
 
                     // add the sprite:
-                    sprites.Add(lineTextObject);
+                    lineObjects.Add(textLine);
                 }
             }
 

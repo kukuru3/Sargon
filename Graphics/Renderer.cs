@@ -14,13 +14,29 @@ namespace Sargon.Graphics {
             blitState.BlendMode = BlendMode.Add;
 
             if (UsePlaceholderSprite) placeholderSprite = new SFML.Graphics.Sprite();
-
+            rectSprite = new SFML.Graphics.Sprite();
         }
 
-        SFML.Graphics.RenderStates blitState;
+        RenderStates blitState;
 
         SFML.Graphics.Sprite placeholderSprite;
+        SFML.Graphics.Sprite rectSprite; // special sprite reused when ever we want to directly render a rect
 
+        internal void RenderRect(RenderTexture t, Ur.Geometry.Rect rect, Effect shaderState, bool additive = false) {
+            rectSprite.Texture = t.Texture;
+            rectSprite.TextureRect = new IntRect(0, 0, (int)rect.W, (int)rect.H);
+
+            // rectSprite.Scale = new SFML.System.Vector2f(1f, -1f);
+
+            // rectSprite.Scale = new SFML.System.Vector2f(-1f, 1f);
+            // rectSprite.Scale = new SFML.System.Vector2f(rect.W / t.Size.X, rect.H / t.Size.Y);
+            rectSprite.Position = new SFML.System.Vector2f(rect.X0, rect.Y0);
+
+            blitState.BlendMode = additive ? BlendMode.Add : BlendMode.Alpha;
+            blitState.Shader = shaderState?.Shader?.NativeShader;
+            shaderState?.Apply();
+            Pipeline.Game.RenderTarget.Draw(rectSprite, blitState);
+        }
 
         internal void RenderSprite(Sprite sprite) {
 
@@ -34,16 +50,22 @@ namespace Sargon.Graphics {
             s.TextureRect = sprite.TextureSubrect.ToSFMLIntRect();
             var anchor = sprite.Anchor;
             s.Origin = new SFML.System.Vector2f(s.TextureRect.Width * anchor.x, s.TextureRect.Height * anchor.y);
-            // DO RENDER!
+
+            // set up blit state
             blitState.BlendMode = sprite.Additive ? BlendMode.Add : BlendMode.Alpha;
+            blitState.Shader = sprite.Effect?.Shader?.NativeShader;
+            sprite.Effect?.Apply(); // applies itself to native shader instance.
 
+            // DO RENDER!
             Pipeline.Game.RenderTarget.Draw(s, blitState);
-
         }
 
         internal void RenderText(Text text, SFML.Graphics.Text textSprite) {
             blitState.BlendMode = text.Additive ? BlendMode.Add : BlendMode.Alpha;
-            Pipeline.Game.RenderTarget.Draw(textSprite);
+            blitState.Shader = text.Effect?.Shader?.NativeShader;
+            text.Effect?.Apply();
+
+            Pipeline.Game.RenderTarget.Draw(textSprite, blitState);
         }
     }
 }

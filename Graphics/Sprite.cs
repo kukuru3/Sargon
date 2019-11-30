@@ -22,6 +22,8 @@ namespace Sargon.Graphics {
         public Canvas OnCanvas { get; set; } = null;
         public Color Color { get; set; } = Color.White;
 
+        public Effect Effect { get; set; } = null;
+
         public bool Visible {
             get => visible;
             set { visible = value; OnCanvas?.MarkMemberDepthAsDirty(); }
