@@ -54,10 +54,12 @@ namespace Sargon.Assets {
         }
 
         private void HandleTextureLoaded(Ur.Filesystem.Loader loader, Texture asset) {
-            spriteDefsByTexture[asset] = new List<SpriteDefinition>();
-            var idkey = GetAssetIdentityKey(loader);
-            textureIdentitiesLookup[asset] = idkey;
-            spriteDefsByStringID.Add(idkey, asset);
+            lock(spriteDefsByTexture) { 
+                spriteDefsByTexture[asset] = new List<SpriteDefinition>();
+                var idkey = GetAssetIdentityKey(loader);
+                textureIdentitiesLookup[asset] = idkey;
+                spriteDefsByStringID.Add(idkey, asset);
+            }
         }
 
         #endregion

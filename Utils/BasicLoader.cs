@@ -1,11 +1,17 @@
-﻿using System;
+﻿using Sargon.Assets;
+using System;
+using System.Collections.Generic;
 
 namespace Sargon.Utils {
 
     /// <summary> This class is meant to encapsulate the Ur loader.</summary>
-    public class BasicLoader : State {
+    public class BasicLoader {
 
         private string directory = "";
+
+        List<IAsset> loadedAssets;
+
+        public IEnumerable<IAsset> AllLoadedAssets => loadedAssets;
 
         public BasicLoader(string path) {
             this.directory = Ur.Filesystem.Folders.GetDirectory(path);
@@ -13,11 +19,9 @@ namespace Sargon.Utils {
 
         public event Action Complete;
 
-        protected internal override void Initialize() {
-            Register(Hooks.Initialize, Scan);
-        }
+        public void Scan() {
 
-        private void Scan() {
+            loadedAssets = new List<IAsset>();
 
             var lq = new Ur.Filesystem.LoadingQueue();
             var foundAttrs = Ur.Typesystem.Finder.FromAllAssemblies().GetTypesWithAttribute<Ur.Filesystem.UrLoaderAttribute>();
@@ -33,11 +37,12 @@ namespace Sargon.Utils {
                 var loader = args.Sender;
                 switch (args.State) {
                     case Ur.Filesystem.LoadStates.Completed:
-                        Game.Log("[COMPLETE] : " + args.Sender.Path, ConsoleColor.DarkCyan);
-                        Context.Assets.HandleAssetLoaded(args.Sender, args.Sender.LoadedAssetItem);
+                        GameContext.Current.GameInstance.Log("[COMPLETE] : " + args.Sender.Path, ConsoleColor.DarkCyan);
+                        GameContext.Current.Assets.HandleAssetLoaded(args.Sender, args.Sender.LoadedAssetItem);
+                        if (args.Sender.LoadedAssetItem is IAsset asset) loadedAssets.Add(asset);
                         break;
                     case Ur.Filesystem.LoadStates.Failure:
-                        Game.Log("[  FAIL  ] : " + args.Sender.Path, ConsoleColor.DarkRed);
+                        GameContext.Current.GameInstance.Log("[  FAIL  ] : " + args.Sender.Path, ConsoleColor.DarkRed);
                         break;
                 }
             };

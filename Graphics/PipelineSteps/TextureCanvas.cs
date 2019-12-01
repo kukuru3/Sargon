@@ -52,14 +52,16 @@ namespace Sargon.Graphics {
                 doRegenerate = false;
             }
             target.Clear(SFML.Graphics.Color.Transparent);
-            Pipeline.Game.RenderTarget = target;
+            Pipeline.RenderTargetStack.Push(target);
+            
             base.BeginDisplay();
         }
 
         protected override void FinalizeDisplay() {
             base.FinalizeDisplay();
             target.Display();
-            Pipeline.Game.RenderTarget = Pipeline.Game.MainWindow;
+            Pipeline.RenderTargetStack.Pop();
+
             Pipeline.Context.Renderer.RenderRect(target, Rect, Effect);
         }
     }

@@ -25,17 +25,13 @@ namespace Sargon.Graphics {
         internal void RenderRect(RenderTexture t, Ur.Geometry.Rect rect, Effect shaderState, bool additive = false) {
             rectSprite.Texture = t.Texture;
             rectSprite.TextureRect = new IntRect(0, 0, (int)rect.W, (int)rect.H);
-
-            // rectSprite.Scale = new SFML.System.Vector2f(1f, -1f);
-
-            // rectSprite.Scale = new SFML.System.Vector2f(-1f, 1f);
-            // rectSprite.Scale = new SFML.System.Vector2f(rect.W / t.Size.X, rect.H / t.Size.Y);
+            rectSprite.Scale = new SFML.System.Vector2f(rect.W / t.Size.X, rect.H / t.Size.Y);
             rectSprite.Position = new SFML.System.Vector2f(rect.X0, rect.Y0);
 
             blitState.BlendMode = additive ? BlendMode.Add : BlendMode.Alpha;
             blitState.Shader = shaderState?.Shader?.NativeShader;
             shaderState?.Apply();
-            Pipeline.Game.RenderTarget.Draw(rectSprite, blitState);
+            Pipeline.RenderTarget.Draw(rectSprite, blitState);
         }
 
         internal void RenderSprite(Sprite sprite) {
@@ -51,13 +47,13 @@ namespace Sargon.Graphics {
             var anchor = sprite.Anchor;
             s.Origin = new SFML.System.Vector2f(s.TextureRect.Width * anchor.x, s.TextureRect.Height * anchor.y);
 
-            // set up blit state
+            // set up blit stat e
             blitState.BlendMode = sprite.Additive ? BlendMode.Add : BlendMode.Alpha;
             blitState.Shader = sprite.Effect?.Shader?.NativeShader;
             sprite.Effect?.Apply(); // applies itself to native shader instance.
 
             // DO RENDER!
-            Pipeline.Game.RenderTarget.Draw(s, blitState);
+            Pipeline.RenderTarget.Draw(s, blitState);
         }
 
         internal void RenderText(Text text, SFML.Graphics.Text textSprite) {
@@ -65,7 +61,7 @@ namespace Sargon.Graphics {
             blitState.Shader = text.Effect?.Shader?.NativeShader;
             text.Effect?.Apply();
 
-            Pipeline.Game.RenderTarget.Draw(textSprite, blitState);
+            Pipeline.RenderTarget.Draw(textSprite, blitState);
         }
     }
 }

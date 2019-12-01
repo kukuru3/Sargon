@@ -1,5 +1,7 @@
 ﻿using SFML.Window;
 using System;
+using System.Collections.Generic;
+
 namespace Sargon {
     /// <summary> A basic Sargon game instance.</summary>
     public class Game {
@@ -39,7 +41,6 @@ namespace Sargon {
 
         #region Properties - private, internal
         internal SFML.Graphics.RenderWindow MainWindow { get; private set; }
-        internal SFML.Graphics.RenderTarget RenderTarget { get; set; }
         internal Session.GameTime Timer { get; }
         internal ResolutionMode CurrentMode { get; private set; }
         #endregion
@@ -49,6 +50,7 @@ namespace Sargon {
             CurrentMode = new ResolutionMode(800, 600, WindowStyle.Windowed);
             Context = new GameContext(this);
             Timer = new Session.GameTime();
+
             CreateInternalStates();
         }
         #endregion
@@ -158,8 +160,12 @@ namespace Sargon {
             }
 
             var sfmlContext = new ContextSettings(0, 0);
-            MainWindow = new SFML.Graphics.RenderWindow(new VideoMode((uint)CurrentMode.Width, (uint)CurrentMode.Height), Title, sfmlStyles, sfmlContext);
-            RenderTarget = MainWindow;
+            MainWindow = new SFML.Graphics.RenderWindow(
+                new VideoMode(
+                    (uint)CurrentMode.Width,
+                    (uint)CurrentMode.Height,
+                    64
+                ), Title, sfmlStyles, sfmlContext);
         }
 
         private void CreateInternalStates() {

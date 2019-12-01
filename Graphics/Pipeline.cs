@@ -20,8 +20,18 @@ namespace Sargon.Graphics {
         internal Pipeline() {
             IsInternal = true;
             steps = new List<IPipelineStep>();
+            RenderTargetStack = new Stack<SFML.Graphics.RenderTarget>();
         }
         #endregion
+
+        internal Stack<SFML.Graphics.RenderTarget> RenderTargetStack;
+        internal SFML.Graphics.RenderTarget RenderTarget {
+            get {
+                if (RenderTargetStack.Count == 0) return Context.GameInstance.MainWindow;
+                return RenderTargetStack.Peek();
+            }
+        }
+
 
         protected internal override void Initialize() {
             base.Initialize();
@@ -33,6 +43,8 @@ namespace Sargon.Graphics {
         internal float GetAutomaticStepZed() => ++canvasAutoZed;
 
         private void ExecutePipeline() {
+
+            RenderTargetStack.Clear();
 
             if (canvasListDirty) {
                 // do sorting here, etc.

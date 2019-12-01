@@ -6,7 +6,7 @@
         }
 
         public override void Display() {
-            Pipeline.Game.RenderTarget.Clear(Color.ToSFMLColor());
+            Pipeline.RenderTarget.Clear(Color.ToSFMLColor());
         }
     }
 }

@@ -37,10 +37,12 @@ namespace Sargon.Utils {
         public IEnumerable<string> History => history.Select(h => h.Content);
 
         public void Add(string str, ConsoleColor color = ConsoleColor.Gray) {
-            var item = new LogItem(str, color);
-            history.Enqueue(item);
-            if (history.Count > HISTORY_SIZE) history.Dequeue();
-            LogAdded?.Invoke(item);
+            lock(history) { 
+                var item = new LogItem(str, color);
+                history.Enqueue(item);
+                if (history.Count > HISTORY_SIZE) history.Dequeue();
+                LogAdded?.Invoke(item);
+            }
         }
 
         internal event Action<LogItem> LogAdded;
