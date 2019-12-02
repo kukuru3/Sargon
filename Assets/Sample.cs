@@ -4,24 +4,33 @@ namespace Sargon.Assets {
     /// <summary>An audio sample.</summary>
     public class Sample : IAsset {
 
-        SA.Sound sound;
-
-        SA.SoundStream stream;
+        internal SA.SoundBuffer SoundBuffer { get; private set; }
+        
+        public bool Streaming { get; }
 
         public Sample(string path, bool streaming) {
             Path = path;
-            if (streaming) {
-                
-                
-            }
+            Streaming = streaming;
+            StartLoad();
         }
 
         public string Path { get; }
 
         public LoadStates LoadState { get; private set; }
 
-        public void Dispose() => throw new System.NotImplementedException();
-        public void StartLoad() { }
-        public void Unload() { }
+        public void Dispose() {
+            SoundBuffer?.Dispose();
+        }
+
+        public void StartLoad() { 
+            if (!Streaming) {
+                SoundBuffer = new SA.SoundBuffer(Path);
+            }
+        }
+
+        public void Unload() { 
+            LoadState = LoadStates.NotLoaded;
+            Dispose();
+        }
     }
 }

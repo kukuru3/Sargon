@@ -62,7 +62,7 @@ namespace Sargon.Assets {
                 nativeTexture.Smooth = true;
                 nativeTexture.Repeated = true;
                 Size = new Int2((int)nativeTexture.Size.X, (int)nativeTexture.Size.Y);
-            } catch (Exception) { // pokemon exception catching :P                
+            } catch (Exception) { // pokemon exception catching :P
                 LoadState = LoadStates.Failed;
             }
             LoadState = LoadStates.Active;

@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Ur.Filesystem;
 
 namespace Sargon.Assets {
     public class AssetManager {
@@ -10,6 +12,7 @@ namespace Sargon.Assets {
         private Dictionary<string, SpriteDefinition> spriteDefsByStringID;
         private Dictionary<Texture, string> textureIdentitiesLookup;
         private Dictionary<string, Font> fontsCachedByID;
+        private Dictionary<string, Sample> samplesCachedByID;
         private Dictionary<string, Shader> shadersCachedByID;
         #endregion
 
@@ -24,6 +27,7 @@ namespace Sargon.Assets {
             spriteDefsByTexture = new Dictionary<Texture, List<SpriteDefinition>>();
             spriteDefsByStringID = new Dictionary<string, SpriteDefinition>();
             fontsCachedByID = new Dictionary<string, Font>();
+            samplesCachedByID = new Dictionary<string, Sample>();
             shadersCachedByID = new Dictionary<string, Shader>();
             textureIdentitiesLookup = new Dictionary<Texture, string>();
         }
@@ -37,8 +41,15 @@ namespace Sargon.Assets {
                 HandleFontLoaded(loader, f);
             } else if (asset is Shader s) {
                 HandleShaderLoaded(loader, s);
+            } else if (asset is Sample ss) {
+                HandleSampleLoaded(loader, ss);
             }
 
+        }
+
+        private void HandleSampleLoaded(Loader loader, Sample asset) {
+            var idkey = GetAssetIdentityKey(loader);
+            samplesCachedByID.Add(idkey, asset);
         }
 
         private void HandleFontLoaded(Ur.Filesystem.Loader loader, Font asset) {
@@ -105,6 +116,11 @@ namespace Sargon.Assets {
 
         public Shader GetShader(string assetIdentity) {
             shadersCachedByID.TryGetValue(assetIdentity, out var value);
+            return value;
+        }
+
+        public Sample GetSample(string assetIdentity) {
+            samplesCachedByID.TryGetValue(assetIdentity, out var value);
             return value;
         }
 

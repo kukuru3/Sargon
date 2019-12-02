@@ -179,6 +179,9 @@ namespace Sargon {
             Context.Pipeline = new Graphics.Pipeline();
             AddState(Context.Pipeline);
 
+            Context.Audio = new Audio.AudioPlayer();
+            AddState(Context.Audio);
+
             Context.StateManager.FlushStateQueues();
         }
 

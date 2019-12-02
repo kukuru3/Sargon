@@ -14,14 +14,11 @@
 
   <ItemGroup>
     <PackageReference Include="SFML.Net" Version="2.5.0" />
+    <PackageReference Include="YamlDotNet" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Ur\Ur.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Audio\" />
   </ItemGroup>
 
 </Project>

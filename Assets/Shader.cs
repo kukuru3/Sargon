@@ -29,6 +29,11 @@ namespace Sargon.Assets {
             LoadState = LoadStates.Active;
 
         }
-        public void Unload() => throw new NotImplementedException();
+
+        public void Unload() { 
+            Dispose();
+            NativeShader = null;
+            LoadState = LoadStates.NotLoaded;
+        }
     }
 }

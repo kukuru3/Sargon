@@ -9,13 +9,14 @@ namespace Sargon {
         public Game GameInstance { get; }
         public Utils.Logger Logger { get; }
 
-
         internal Input.InputEventHandler InputHandler { get; }
         internal StateManager StateManager { get; }
         internal Graphics.Renderer Renderer { get; }
         internal BaseState BaseState { get; set; }
 
         public Graphics.Screen Screen { get; }
+
+        public Audio.AudioPlayer Audio { get; internal set; }
 
         public Assets.AssetManager Assets { get; set; }
 

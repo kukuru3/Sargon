@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿#define YAML
+
+using System.Collections.Generic;
 using System.IO;
+using Ur.Grid;
 
 namespace Sargon.Assets.Loaders {
     [Ur.Filesystem.UrLoader("png|bmp|jpg")]
@@ -21,9 +24,9 @@ namespace Sargon.Assets.Loaders {
             if (File.Exists(extraPath)) {
                 var text = File.ReadAllText(extraPath);
                 var input = new StringReader(text);
-#if YAML
-                var deserializer = new YamlDotNet.Serialization.Deserializer();                
-                var texMetadata = deserializer.Deserialize<TextureMetadataLoader>(input);
+                #if YAML
+                var deserializer = new YamlDotNet.Serialization.Deserializer();
+                var texMetadata = deserializer.Deserialize<TextureMetadata>(input);
                 if (texMetadata != null) {
                     if (texMetadata.sprites != null) {
                         foreach (var kvp in texMetadata.sprites) {
@@ -49,11 +52,11 @@ namespace Sargon.Assets.Loaders {
                         }
                     }
                 }
-#endif
+                #endif
             }
         }
 
-        private class TextureMetadataLoader {
+        private class TextureMetadata {
             public Dictionary<string, int[]> sprites { get; set; }
             public GridDef grid { get; set; }
 
@@ -64,7 +67,5 @@ namespace Sargon.Assets.Loaders {
             }
 
         }
-
-
     }
 }
