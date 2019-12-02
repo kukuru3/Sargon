@@ -8,7 +8,7 @@ namespace Sargon.Graphics.PipelineSteps {
         SFML.Graphics.RenderTexture renderTexture;
 
         // for now, rt will conform to the screen at 1 to 1 resolution
-        public RenderTextureStep(Pipeline pipeline): base(pipeline) {
+        public RenderTextureStep() {
             RegenerateRT();
         }
 
@@ -26,8 +26,6 @@ namespace Sargon.Graphics.PipelineSteps {
     }
 
     public class DumpRTToScreenStep: BasicPipelineStep, IHasEffect {
-        public DumpRTToScreenStep(Pipeline pipeline) : base(pipeline) { }
-
         public Effect Effect { get; set; }
 
         public override void Display() { 

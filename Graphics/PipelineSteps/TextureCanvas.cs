@@ -42,7 +42,7 @@ namespace Sargon.Graphics {
             target = new SFML.Graphics.RenderTexture(w, h);
         }
 
-        public TextureCanvas(Pipeline p, Rect rect) : base(p) {
+        public TextureCanvas(Rect rect) {
             this.Rect = rect; // will also execute a texture regeneration
         }
 

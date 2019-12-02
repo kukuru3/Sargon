@@ -19,7 +19,7 @@ namespace Sargon.Graphics {
         #endregion
 
         #region Constructor
-        public Canvas(Pipeline p) : base(p) {
+        public Canvas() {
             activeItems = new List<IRenderable>();
             flaggedForRemoval = new HashSet<IRenderable>();
             MarkMemberDepthAsDirty();

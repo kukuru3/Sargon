@@ -9,8 +9,8 @@
     public abstract class BasicPipelineStep : IPipelineStep {
         private float zed = 0f;
 
-        public BasicPipelineStep(Pipeline pipeline) {
-            Pipeline = pipeline;
+        public BasicPipelineStep() {
+            Pipeline = GameContext.Current.Pipeline;
             Zed = Pipeline.GetAutomaticStepZed();
             Pipeline.AddStep(this);
         }
