@@ -38,7 +38,7 @@ namespace Sargon.Utils {
                 switch (args.State) {
                     case Ur.Filesystem.LoadStates.Completed:
                         GameContext.Current.GameInstance.Log("[COMPLETE] : " + args.Sender.Path, ConsoleColor.DarkCyan);
-                        GameContext.Current.Assets.HandleAssetLoaded(args.Sender, args.Sender.LoadedAssetItem);
+                        GameContext.Current.Assets.HandleAssetLoaded(args.Sender, args.Sender.LoadedAssetItem, args.Sender.LoadedAssetMetadata);
                         if (args.Sender.LoadedAssetItem is IAsset asset) loadedAssets.Add(asset);
                         break;
                     case Ur.Filesystem.LoadStates.Failure:

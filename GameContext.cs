@@ -18,7 +18,7 @@ namespace Sargon {
 
         public Audio.AudioPlayer Audio { get; internal set; }
 
-        public Assets.AssetManager Assets { get; set; }
+        public Assets.AssetDatabase Assets { get; set; }
 
         static internal GameContext Current { get; private set; }
 
@@ -30,7 +30,7 @@ namespace Sargon {
             InputHandler = new Input.InputEventHandler(sgame);
             Diagnostics = new Utils.Diagnostics();
             Logger = new Utils.Logger();
-            Assets = new Assets.AssetManager();
+            Assets = new Assets.AssetDatabase();
             Renderer = new Graphics.Renderer();
             Screen = new Graphics.Screen(sgame);
 

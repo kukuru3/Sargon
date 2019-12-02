@@ -1,10 +1,11 @@
-﻿using System;
+﻿using Sargon.Assets.Metadata;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Ur.Filesystem;
 
 namespace Sargon.Assets {
-    public class AssetManager {
+    public class AssetDatabase {
 
         #region Lookup lists and dictionaries
         private List<SpriteDefinition> allSpriteDefinitions;
@@ -14,6 +15,8 @@ namespace Sargon.Assets {
         private Dictionary<string, Font> fontsCachedByID;
         private Dictionary<string, Sample> samplesCachedByID;
         private Dictionary<string, Shader> shadersCachedByID;
+
+        private List<IAsset> allAssets;
         #endregion
 
         public int DefaultCharacterSize { get; set; } = 22;
@@ -22,7 +25,7 @@ namespace Sargon.Assets {
         public IEnumerable<Font> AllFonts => fontsCachedByID.Values.OrderBy(font => font.Path);
 
         #region Ctor
-        public AssetManager() {
+        public AssetDatabase() {
             allSpriteDefinitions = new List<SpriteDefinition>();
             spriteDefsByTexture = new Dictionary<Texture, List<SpriteDefinition>>();
             spriteDefsByStringID = new Dictionary<string, SpriteDefinition>();
@@ -30,21 +33,32 @@ namespace Sargon.Assets {
             samplesCachedByID = new Dictionary<string, Sample>();
             shadersCachedByID = new Dictionary<string, Shader>();
             textureIdentitiesLookup = new Dictionary<Texture, string>();
+            allAssets = new List<IAsset>();
         }
         #endregion
 
         #region Handlers
-        internal void HandleAssetLoaded(Ur.Filesystem.Loader loader, object asset) {
-            if (asset is Texture t) {
-                HandleTextureLoaded(loader, t);
-            } else if (asset is Font f) {
-                HandleFontLoaded(loader, f);
-            } else if (asset is Shader s) {
-                HandleShaderLoaded(loader, s);
-            } else if (asset is Sample ss) {
-                HandleSampleLoaded(loader, ss);
+        internal void HandleAssetLoaded(Loader loader, object asset, object metadata) {
+            if (asset is IAsset a ) {
+                TryAssignMetadata(a, metadata);
+                allAssets.Add(a);
             }
 
+            switch (asset) {
+                case Texture t: HandleTextureLoaded(loader, t); break;
+                case Font f: HandleFontLoaded(loader, f); break;
+                case Shader s: HandleShaderLoaded(loader, s); break;
+                case Sample ss: HandleSampleLoaded(loader, ss); break;
+            }
+        }
+
+        private void TryAssignMetadata(IAsset a, object metadata) {
+            switch (a) {
+                case Texture t: t.Metadata = metadata as TextureMetadata; break;
+                case Font f: f.Metadata = metadata as FontMetadata; break;
+                case Shader s: s.Metadata = metadata as ShaderMetadata; break;
+                case Sample ss: ss.Metadata = metadata as SampleMetadata; break;
+            }
         }
 
         private void HandleSampleLoaded(Loader loader, Sample asset) {
@@ -52,19 +66,19 @@ namespace Sargon.Assets {
             samplesCachedByID.Add(idkey, asset);
         }
 
-        private void HandleFontLoaded(Ur.Filesystem.Loader loader, Font asset) {
+        private void HandleFontLoaded(Loader loader, Font asset) {
             if (DefaultFont == null) DefaultFont = asset;
 
             var idkey = GetAssetIdentityKey(loader);
             fontsCachedByID.Add(idkey, asset);
         }
 
-        private void HandleShaderLoaded(Ur.Filesystem.Loader loader, Shader asset) {
+        private void HandleShaderLoaded(Loader loader, Shader asset) {
             var idkey = GetAssetIdentityKey(loader);
             shadersCachedByID.Add(idkey, asset);
         }
 
-        private void HandleTextureLoaded(Ur.Filesystem.Loader loader, Texture asset) {
+        private void HandleTextureLoaded(Loader loader, Texture asset) {
             lock(spriteDefsByTexture) { 
                 spriteDefsByTexture[asset] = new List<SpriteDefinition>();
                 var idkey = GetAssetIdentityKey(loader);
@@ -132,5 +146,8 @@ namespace Sargon.Assets {
             return raw;
         }
 
+        public IEnumerable<IAsset> WithTag(string tag) {
+            return allAssets.Where(ass => ass.Metadata?.tags.Contains(tag) ?? false);
+        }
     }
 }

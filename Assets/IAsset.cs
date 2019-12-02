@@ -20,6 +20,6 @@ namespace Sargon.Assets {
         void StartLoad();
         void Unload();
 
-
+        Metadata.BaseMetadata Metadata { get; }
     }
 }

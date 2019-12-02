@@ -10,7 +10,7 @@ namespace Sargon.Assets {
         private SFML.Graphics.RenderTexture nativeRenderTexture;
         #endregion
 
-        #region Properties       
+        #region Properties
         public LoadStates LoadState { get; private set; }
         public bool IsNative { get; private set; }
         public string Path { get; private set; }
@@ -86,7 +86,11 @@ namespace Sargon.Assets {
             nativeTexture.Dispose();
             nativeRenderTexture?.Dispose();
         }
+
+        public Metadata.TextureMetadata Metadata { get; internal set; }
         #endregion
+
+        Metadata.BaseMetadata IAsset.Metadata => Metadata;
 
     }
 }

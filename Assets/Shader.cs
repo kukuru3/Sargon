@@ -35,5 +35,9 @@ namespace Sargon.Assets {
             NativeShader = null;
             LoadState = LoadStates.NotLoaded;
         }
+
+        public Metadata.ShaderMetadata Metadata { get; internal set; }
+
+        Metadata.BaseMetadata IAsset.Metadata => Metadata; 
     }
 }

@@ -11,8 +11,13 @@ namespace Sargon.Session {
         List<MethodDef> allMethods;
         Queue<State> addedStates;
         Queue<State> removedStates;
+        List<State> activeStates;
 
         internal Game GameInstance { get; }
+
+        internal event Action<State> StateAdded;
+        internal event Action<State> StateRemoved;
+
         #endregion
 
         #region Ctor
@@ -20,11 +25,14 @@ namespace Sargon.Session {
             allMethods = new List<MethodDef>();
             addedStates = new Queue<State>();
             removedStates = new Queue<State>();
+            activeStates = new List<State>();
             GameInstance = gameInstance;
         }
         #endregion
 
         #region State addition and removal
+
+        internal IEnumerable<State> ActiveStates => activeStates;
 
         internal void FlushStateQueues() {
             while (addedStates.Count > 0) DoAddState(addedStates.Dequeue());
@@ -34,12 +42,16 @@ namespace Sargon.Session {
         private void DoAddState(State state) {
             state.Manager = this;
             state.Initialize();
+            StateAdded?.Invoke(state);
+            activeStates.Add(state);
             GameInstance.Context.Logger.Add("initializing state : " + state.Name, ConsoleColor.DarkGreen);
         }
 
         private void DoRemoveState(State state) {
             allMethods.RemoveAll(m => m.Method.Target == state);
             InvalidateCallList();
+            StateRemoved?.Invoke(state);
+            activeStates.Remove(state);
             state.Cleanup();
         }
 

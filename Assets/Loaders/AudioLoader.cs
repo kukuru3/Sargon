@@ -19,6 +19,7 @@ namespace Sargon.Assets.Loaders {
 
             var sample = new Sample(Path, isStreamingAsset);
             base.LoadedAssetItem = sample;
+            base.LoadedAssetMetadata = meta;
 
             UpdateState(Ur.Filesystem.LoadStates.Completed);
         }
@@ -31,12 +32,13 @@ namespace Sargon.Assets.Loaders {
                 
                 var deserializer = new YamlDotNet.Serialization.Deserializer();
                 var sampleMetadata = deserializer.Deserialize<SampleMetadata>(input);
+
                 return sampleMetadata;
             }
             return null;
         }
 
-        class SampleMetadata {
+        internal class SampleMetadata {
             public bool streamed { get; set; }
         }
     }

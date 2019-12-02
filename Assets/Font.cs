@@ -37,6 +37,10 @@ namespace Sargon.Assets {
             if (NativeFont != null) NativeFont.Dispose();
         }
 
+        public Metadata.FontMetadata Metadata { get; internal set; }
+
+        Metadata.BaseMetadata IAsset.Metadata => Metadata;
+
         public static implicit operator Font(string assetID) => GameContext.Current.Assets.GetFont(assetID);
     }
 }

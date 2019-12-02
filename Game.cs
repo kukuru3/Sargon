@@ -163,8 +163,7 @@ namespace Sargon {
             MainWindow = new SFML.Graphics.RenderWindow(
                 new VideoMode(
                     (uint)CurrentMode.Width,
-                    (uint)CurrentMode.Height,
-                    64
+                    (uint)CurrentMode.Height
                 ), Title, sfmlStyles, sfmlContext);
         }
 

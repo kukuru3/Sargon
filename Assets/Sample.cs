@@ -3,7 +3,6 @@
 namespace Sargon.Assets {
     /// <summary>An audio sample.</summary>
     public class Sample : IAsset {
-
         internal SA.SoundBuffer SoundBuffer { get; private set; }
         
         public bool Streaming { get; }
@@ -32,5 +31,10 @@ namespace Sargon.Assets {
             LoadState = LoadStates.NotLoaded;
             Dispose();
         }
+
+        public Metadata.SampleMetadata Metadata { get; internal set; }
+
+        Metadata.BaseMetadata IAsset.Metadata => Metadata;
+        
     }
 }

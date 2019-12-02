@@ -89,8 +89,9 @@ namespace Sargon.Graphics {
             this.text = text;
             this.font = font;
             this.charsize = charSize;
-            if (this.charsize < 1) this.charsize = GameContext.Current.Assets.DefaultCharacterSize;
             if (this.font == null) this.font = GameContext.Current.Assets.DefaultFont;
+            if (this.charsize < 1) this.charsize = this.font?.Metadata?.DefaultSize ?? 0; 
+            if (this.charsize < 1) this.charsize = GameContext.Current.Assets.DefaultCharacterSize;
             this.scale = Vector2.One;
             this.rect = Rect.FromBounds(0, 0, 500, 500);
         }
