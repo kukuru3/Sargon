@@ -16,7 +16,7 @@ namespace Sargon.Input {
             for (SFK key = SFK.Num0; key <= SFK.Num9; key++) table[(int)key] = (Keys)((int)Keys.Alpha0 + (int)(key - SFK.Num0));
             for (SFK key = SFK.F1; key <= SFK.F12; key++) table[(int)key] = (Keys)((int)Keys.F1 + (int)(key - SFK.F1));
 
-            table[(int)SFK.Return] = Keys.Enter;
+            table[(int)SFK.Enter] = Keys.Enter;
             table[(int)SFK.Space] = Keys.Space;
             table[(int)SFK.RAlt] = Keys.RAlt;
             table[(int)SFK.RControl] = Keys.RCtrl;
@@ -29,7 +29,7 @@ namespace Sargon.Input {
             table[(int)SFK.Right] = Keys.Right;
             table[(int)SFK.Up] = Keys.Up;
             table[(int)SFK.Down] = Keys.Down;
-            table[(int)SFK.BackSpace] = Keys.Backspace;
+            table[(int)SFK.Backspace] = Keys.Backspace;
             table[(int)SFK.Delete] = Keys.Delete;
             table[(int)SFK.Escape] = Keys.Escape;
             table[(int)SFK.Numpad0] = Keys.Pad0;
@@ -47,12 +47,12 @@ namespace Sargon.Input {
 
             table[(int)SFK.LBracket] = Keys.LeftBracket;
             table[(int)SFK.RBracket] = Keys.RightBracket;
-            table[(int)SFK.SemiColon] = Keys.Semicolon;
+            table[(int)SFK.Semicolon] = Keys.Semicolon;
             table[(int)SFK.Quote] = Keys.Apostrophe;
             table[(int)SFK.Comma] = Keys.Comma;
             table[(int)SFK.Period] = Keys.Period;
             table[(int)SFK.Slash] = Keys.Slash;
-            table[(int)SFK.BackSlash] = Keys.Backslash;
+            table[(int)SFK.Backslash] = Keys.Backslash;
             table[(int)SFK.Equal] = Keys.Equals;
             // table[(int)SFK.Subtract] = Keys.Subtract;                                           
 

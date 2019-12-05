@@ -10,7 +10,9 @@ namespace Sargon {
         public Utils.Logger Logger { get; }
 
         internal Input.InputEventHandler InputHandler { get; }
+
         internal StateManager StateManager { get; }
+
         internal Graphics.Renderer Renderer { get; }
         internal BaseState BaseState { get; set; }
 

@@ -46,7 +46,7 @@ namespace Sargon.Graphics {
 
         public Anchors Anchor {
             get => anchor;
-            set { anchor = value; MarkDirty(); }
+            set { if (value == anchor) return;  anchor = value; MarkDirty(); }
         }
 
         public Vector2 Scale {
@@ -56,7 +56,7 @@ namespace Sargon.Graphics {
 
         public int CharacterSize {
             get => charsize;
-            set { charsize = value; MarkDirty(); }
+            set { if (charsize == value) return; charsize = value; MarkDirty(); }
         }
 
         public Assets.Font Font {

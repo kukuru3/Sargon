@@ -29,7 +29,7 @@ namespace Sargon.Utils {
                 lq.RegisterLoader(kvp.Value, kvp.Key.Extensions);
             }
 
-            Console.WriteLine("Enqueueing directory: " + new System.IO.DirectoryInfo(directory).FullName + " with children");
+            GameContext.Current.Logger.Add("Enqueueing directory: " + new System.IO.DirectoryInfo(directory).FullName + " with children");
 
             lq.EnqueueDirectory(directory, true);
 

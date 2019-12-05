@@ -17,7 +17,7 @@ namespace Sargon.Audio {
         }
 
         private void Update() { 
-            Cleanup();
+            CleanupInstances();
             foreach (var sound in sounds) sound.UpdateFrame();
         }
 
@@ -52,7 +52,7 @@ namespace Sargon.Audio {
             return item;
         }
 
-        private void Cleanup() {
+        void CleanupInstances() {
             instances.RemoveWhere(item => item.IsComplete());
         }
 
