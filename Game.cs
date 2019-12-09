@@ -159,7 +159,8 @@ namespace Sargon {
                     break;
             }
 
-            var sfmlContext = new ContextSettings(0, 0);
+            var sfmlContext = new ContextSettings(0, 0, 4);
+            // sfmlContext.SRgbCapable = true;
             MainWindow = new SFML.Graphics.RenderWindow(
                 new VideoMode(
                     (uint)CurrentMode.Width,

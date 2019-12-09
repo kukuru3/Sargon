@@ -1,4 +1,5 @@
-﻿using SFML.Graphics;
+﻿using System;
+using SFML.Graphics;
 
 namespace Sargon.Graphics {
     internal class Renderer {
@@ -62,6 +63,20 @@ namespace Sargon.Graphics {
             text.Effect?.Apply();
 
             Pipeline.RenderTarget.Draw(textSprite, blitState);
+        }
+
+        internal void RenderNinegrid(Ninegrid grid, VertexArray nativeArray) {
+            var renderState = new RenderStates();
+                
+            renderState.BlendMode = grid.Additive ? BlendMode.Add : BlendMode.Alpha;
+            renderState.Shader = grid.Effect?.Shader?.NativeShader;
+            grid.Effect?.Apply();
+
+            renderState.Transform = Transform.Identity;
+            renderState.Transform.Translate(grid.Position.ToSFMLVector2f());
+            renderState.Texture = grid.Source?.Texture?.NativeTexture;
+
+            Pipeline.RenderTarget.Draw(nativeArray, renderState);
         }
     }
 }

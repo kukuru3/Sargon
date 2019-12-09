@@ -4,20 +4,18 @@ using Ur.Geometry;
 using IntRect = Ur.Grid.Rect;
 
 namespace Sargon.Graphics {
-    public class Sprite : IRenderable {
 
+    public abstract class BaseSprite : IRenderable {
         #region Fields
         private float z;
         private bool visible = true;
-        private IntRect? sourceImageSubrect;
-        private Vector2? overriddenAnchor;
+        protected IntRect? sourceImageSubrect;
+
         internal SFML.Graphics.Sprite nativeSprite;
         #endregion
 
         #region Properties
         public SpriteDefinition Source { get; set; }
-        public Vector2 Scale { get; set; } = Vector2.One;
-        public Vector2 Position { get; set; }
         public float Rotation { get; set; } = 0;
         public Canvas OnCanvas { get; set; } = null;
         public Color Color { get; set; } = Color.White;
@@ -32,10 +30,21 @@ namespace Sargon.Graphics {
         public float Zed { get { return z; } set { if (z.Approximately(value)) return; z = value; OnCanvas?.MarkMemberDepthAsDirty(); } }
 
         public IntRect TextureSubrect => sourceImageSubrect ?? Source.Rect;
-        public Vector2 Anchor => overriddenAnchor ?? Source.Anchor;
 
         public bool Additive { get; set; }
         #endregion
+
+        public abstract void Display();
+        public abstract void Dispose();
+    }
+
+    public class Sprite : BaseSprite, IRenderable {
+
+        protected Vector2? overriddenAnchor;
+
+        public Vector2 Scale { get; set; } = Vector2.One;
+        public Vector2 Position { get; set; }
+        public Vector2 Anchor => overriddenAnchor ?? Source.Anchor;
 
         public Sprite() {
             if (!Renderer.UsePlaceholderSprite) {
@@ -55,7 +64,7 @@ namespace Sargon.Graphics {
             this.Scale = new Vector2(w / r.Width, h / r.Height);
         }
 
-        public void Display() {
+        public override void Display() {
             var context = OnCanvas?.Pipeline.Context;
             if (context == null) return;
 
@@ -79,7 +88,7 @@ namespace Sargon.Graphics {
             sourceImageSubrect = null;
         }
 
-        public void Dispose() {
+        public override void Dispose() {
             if (Renderer.UsePlaceholderSprite) return;
             nativeSprite?.Dispose();
         }
