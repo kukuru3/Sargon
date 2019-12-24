@@ -2,6 +2,7 @@
     public class Screen {
 
         private Game GameInstance { get; }
+
         public Screen(Game sgame) {
             GameInstance = sgame;
         }
@@ -14,5 +15,13 @@
 
         public Ur.Grid.Coords Size => (Width, Height);
 
+        Cursors oldCursor = Cursors.Normal;
+
+        public void SetCursor(Cursors c) {
+            if (c == oldCursor) return;
+            GameInstance.MainWindow.SetMouseCursor(new SFML.Window.Cursor(CursorUtilities.ConvertCursor(c)));
+            GameInstance.MainWindow.SetMouseCursorVisible(c != Cursors.None);
+            oldCursor = c;
+        }
     }
 }
