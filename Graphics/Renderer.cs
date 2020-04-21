@@ -35,6 +35,20 @@ namespace Sargon.Graphics {
             Pipeline.RenderTarget.Draw(rectSprite, blitState);
         }
 
+        internal void RenderRect(Assets.Texture source, Assets.Texture target, Ur.Geometry.Rect rect, Effect effect, bool additive = false) {
+            if (target != null && !target.IsRenderTex) throw new Exception("Render target is invalid!");
+            rectSprite.Texture = source.NativeTexture;
+            rectSprite.TextureRect = new IntRect(0, 0, (int)rect.W, (int)rect.H);
+            rectSprite.Scale = new SFML.System.Vector2f(rect.W / source.Width, rect.H / source.Height);
+            rectSprite.Position = new SFML.System.Vector2f(rect.X0, rect.Y0);
+
+            blitState.BlendMode = additive ? BlendMode.Add : BlendMode.Alpha;
+            blitState.Shader = effect?.Shader?.NativeShader;
+            effect?.Apply();
+            if (target != null) target.NativeRenderTexture?.Draw(rectSprite, blitState);
+            else Pipeline.RenderTarget.Draw(rectSprite, blitState);
+        }
+
         internal void RenderSprite(Sprite sprite) {
 
             var s = UsePlaceholderSprite ? placeholderSprite : sprite.nativeSprite;

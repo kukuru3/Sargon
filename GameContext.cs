@@ -28,7 +28,7 @@ namespace Sargon {
 
         public GameContext(Game sgame) {
             GameInstance = sgame;
-            StateManager = new StateManager(sgame);
+            StateManager = new StateManager(sgame); 
             InputHandler = new Input.InputEventHandler(sgame);
             Diagnostics = new Utils.Diagnostics();
             Logger = new Utils.Logger();

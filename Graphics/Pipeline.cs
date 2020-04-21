@@ -32,7 +32,6 @@ namespace Sargon.Graphics {
             }
         }
 
-
         protected internal override void Initialize() {
             base.Initialize();
             Register(Hooks.Frame, ExecutePipeline, PRIORITY);
