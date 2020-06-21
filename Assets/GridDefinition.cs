@@ -33,10 +33,8 @@ namespace Sargon.Assets {
         }
         
         public int GetItemIndex(string item) {
-            if (regen) {
-                RegenerateReverseLookup();
-            }
-            if (!reverseLookup.TryGetValue(item, out var value)) value = -1;
+            if (regen) RegenerateReverseLookup();
+            if (!reverseLookup.TryGetValue(item, out var value)) return -1;
             return value;
         }
 
@@ -52,9 +50,9 @@ namespace Sargon.Assets {
 
         readonly SFML.System.Vector2f[] _uvs = new SFML.System.Vector2f[4]; // optimization
 
-        internal SFML.System.Vector2f[] GetUV(int index) {
-            if (Texture == null) return null;
-            if (index == -1) return null;
+        internal void RecalculateUV(int index, ref SFML.System.Vector2f[] arr) {
+            if (Texture == null) return;
+            if (index == 0) return;
 
             var uvUnitX = 1f / GridDimension.X;
             var uvUnitY = 1f / GridDimension.Y;
@@ -71,17 +69,15 @@ namespace Sargon.Assets {
             uvUnitX *= Texture.Width;
             uvUnitY *= Texture.Height;
 
-            _uvs[0] = new SFML.System.Vector2f(u0, v0);
-            _uvs[1] = new SFML.System.Vector2f(u0 + uvUnitX, v0);
-            _uvs[2] = new SFML.System.Vector2f(u0 + uvUnitX, v0 + uvUnitY);
-            _uvs[3] = new SFML.System.Vector2f(u0, v0 + uvUnitY);
-            return _uvs;
-            
+            arr[0] = new SFML.System.Vector2f(u0, v0);
+            arr[1] = new SFML.System.Vector2f(u0 + uvUnitX, v0);
+            arr[2] = new SFML.System.Vector2f(u0 + uvUnitX, v0 + uvUnitY);
+            arr[3] = new SFML.System.Vector2f(u0, v0 + uvUnitY);
         }
 
-        internal SFML.System.Vector2f[] GetUV(string item) {
+        internal void RecalculateUV(string item, ref SFML.System.Vector2f[] arr) {
             var index = GetItemIndex(item);
-            return GetUV(index);
+            RecalculateUV(index, ref arr);
         }
     }
 }
