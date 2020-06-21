@@ -14,8 +14,8 @@ namespace Sargon.Session {
         private long SystemTicksPerGameTick = TimeSpan.TicksPerSecond / DEFAULT_TICK_FREQUENCY;
         private TimeSpan timeOfPreviousTick;
 
-        public int ScreenFramerateLimit { get; private set; } = DEFAULT_FRAMERATE;
-        public bool ScreenVSync { get; private set; } = DEFAULT_VSYNC;
+        public int ScreenFramerateLimit { get; set; } = DEFAULT_FRAMERATE;
+        public bool ScreenVSync { get; set; } = DEFAULT_VSYNC;
 
         public float ElapsedTime => (float)Stopwatch.Elapsed.TotalSeconds;
         public float Interpolation { get; private set; }
@@ -69,10 +69,10 @@ namespace Sargon.Session {
 
         internal void CaptureFrameTime() {
             var el = Stopwatch.Elapsed.TotalSeconds;
-            FrameTime = (float)(el - recordedFrameTime);
+            FrameTime = (el - recordedFrameTime);
             recordedFrameTime = el;
         }
 
-        public float FrameTime { get; private set; }
+        public double FrameTime { get; private set; }
     }
 }

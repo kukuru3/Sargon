@@ -42,6 +42,10 @@ namespace Sargon.Input {
             return keyStates[(int)keys];
         }
 
+        public IEnumerable<Keys> CurrentlyPressedKeys() {
+            foreach (var key in activeKeys) if (key.IsPressed) yield return key.ID;
+        }
+
         private void AgeKeyInfo(Key k) {
             if (k.status == Key.Status.Pressed) k.status = Key.Status.Held;
             if (k.status == Key.Status.Raised) k.status = Key.Status.Idle;

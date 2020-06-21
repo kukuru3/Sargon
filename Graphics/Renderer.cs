@@ -49,6 +49,20 @@ namespace Sargon.Graphics {
             else Pipeline.RenderTarget.Draw(rectSprite, blitState);
         }
 
+        internal void RenderQuadArray(QuadGrid qa) {
+            var renderState = new RenderStates();
+            renderState.BlendMode = BlendMode.Alpha;
+            // renderState.BlendMode = qa.Additive ? BlendMode.Add : BlendMode.Alpha;
+            // renderState.Shader = qa.Effect?.Shader?.NativeShader;
+            // qa.Effect?.Apply();
+
+            renderState.Transform = Transform.Identity;
+            renderState.Transform.Translate(qa.Position.ToSFMLVector2f());
+            renderState.Texture = qa.SourceGrid?.Texture?.NativeTexture;
+
+            Pipeline.RenderTarget.Draw(qa.nativeVertexArray, renderState);
+        }
+
         internal void RenderSprite(Sprite sprite) {
 
             var s = UsePlaceholderSprite ? placeholderSprite : sprite.nativeSprite;

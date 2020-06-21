@@ -59,7 +59,7 @@ namespace Sargon.Assets {
                 } else {
                     nativeTexture = new SFML.Graphics.Texture(Path);
                 }
-                nativeTexture.Smooth = true;
+                nativeTexture.Smooth = false;
                 nativeTexture.Repeated = true;
                 Size = new Int2((int)nativeTexture.Size.X, (int)nativeTexture.Size.Y);
             } catch (Exception) { // pokemon exception catching :P

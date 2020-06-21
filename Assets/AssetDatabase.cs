@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Ur.Filesystem;
+using Ur.Grid;
 
 namespace Sargon.Assets {
     public class AssetDatabase {
@@ -11,6 +12,7 @@ namespace Sargon.Assets {
         private List<SpriteDefinition> allSpriteDefinitions;
         private Dictionary<Texture, List<SpriteDefinition>> spriteDefsByTexture;
         private Dictionary<string, SpriteDefinition> spriteDefsByStringID;
+        private Dictionary<string, GridDefinition> gridDefsByStringID;
         private Dictionary<Texture, string> textureIdentitiesLookup;
         private Dictionary<string, Font> fontsCachedByID;
         private Dictionary<string, Sample> samplesCachedByID;
@@ -29,6 +31,7 @@ namespace Sargon.Assets {
             allSpriteDefinitions = new List<SpriteDefinition>();
             spriteDefsByTexture = new Dictionary<Texture, List<SpriteDefinition>>();
             spriteDefsByStringID = new Dictionary<string, SpriteDefinition>();
+            gridDefsByStringID = new Dictionary<string, GridDefinition>();
             fontsCachedByID = new Dictionary<string, Font>();
             samplesCachedByID = new Dictionary<string, Sample>();
             shadersCachedByID = new Dictionary<string, Shader>();
@@ -122,6 +125,16 @@ namespace Sargon.Assets {
             return value;
         }
         #endregion
+
+        public void AddGridDefinition(Texture texture, string identity, Coords dimensions) {
+            var griddef = new GridDefinition(identity, texture, dimensions);
+            gridDefsByStringID.Add(identity, griddef);
+        }
+
+        public GridDefinition GetGrid(string identity) {
+            gridDefsByStringID.TryGetValue(identity, out var value);
+            return value;
+        }
 
         public Font GetFont(string assetIdentity) {
             fontsCachedByID.TryGetValue(assetIdentity, out var value);

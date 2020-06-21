@@ -1,4 +1,5 @@
 ﻿using Ur.Grid;
+
 using Vector2 = Ur.Geometry.Vector2;
 
 namespace Sargon.Assets {
@@ -19,7 +20,7 @@ namespace Sargon.Assets {
 
         public Vector2 Anchor { get; }
 
-        /// <summary> A helper operator, means we can supply an existing texture as a definition</summary>
+        /// <summary> A helper operator, means we can supply an existing texture as a definition </summary>
         public static implicit operator SpriteDefinition(Texture texture) => new SpriteDefinition("", texture, new Ur.Grid.Rect(0, 0, texture.Width, texture.Height), -1);
         public static implicit operator SpriteDefinition(string textureID) => GameContext.Current.Assets.Find(textureID);
 
