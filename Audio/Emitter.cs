@@ -33,7 +33,7 @@ namespace Sargon.Audio {
 
             var doPhaseOut = (ActualSample != Sample);
             var targetPhaseOutMultiplier = doPhaseOut ? 0f : 1f;
-            phaseMultiplier = phaseMultiplier.Approach(targetPhaseOutMultiplier, GameContext.Current.Timer.FrameTime / SmoothTime);
+            phaseMultiplier = phaseMultiplier.Approach(targetPhaseOutMultiplier, (float)GameContext.Current.Timer.FrameTime / SmoothTime);
 
             if (doPhaseOut && phaseMultiplier.Approximately(0f)) {
                 currentInstance?.Stop();
@@ -41,7 +41,7 @@ namespace Sargon.Audio {
                 currentInstance = GameContext.Current.Audio.Play(Sample, Looping);
             }
 
-            RealVolume = RealVolume.Approach(Volume, GameContext.Current.Timer.FrameTime / SmoothTime);
+            RealVolume = RealVolume.Approach(Volume, (float)GameContext.Current.Timer.FrameTime / SmoothTime);
             currentInstance?.SetVolume(RealVolume * phaseMultiplier);
 
             currentInstance?.SetPitch(Pitch);

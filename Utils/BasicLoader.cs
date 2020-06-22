@@ -19,7 +19,12 @@ namespace Sargon.Utils {
 
         public event Action Complete;
 
-        public void Scan() {
+        public async void ScanAndExecute() {
+            var lq = ScanFolder();
+            var result = await lq.ExecuteAsync();
+        }
+
+        Ur.Filesystem.LoadingQueue ScanFolder() {
 
             loadedAssets = new List<IAsset>();
 
@@ -48,7 +53,7 @@ namespace Sargon.Utils {
             };
 
             lq.AllTasksComplete += Complete;
-            lq.Execute();
+            return lq;
         }
     }
 }

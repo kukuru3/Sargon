@@ -33,9 +33,7 @@ namespace Sargon {
 
         public GameContext Context { get; private set; }
 
-        public float FrameTime => Timer.FrameTime;
-
-
+        public double FrameTime => Timer.FrameTime;
 
         #endregion
 

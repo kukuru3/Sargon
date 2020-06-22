@@ -12,7 +12,6 @@ namespace Sargon.Assets {
 
         #region Properties
         public LoadStates LoadState { get; private set; }
-        public bool IsNative { get; private set; }
         public string Path { get; private set; }
         public bool IsRenderTex { get; private set; }
         #endregion
@@ -21,6 +20,7 @@ namespace Sargon.Assets {
         public int Width => Size.X;
         public int Height => Size.Y;
         internal SFML.Graphics.Texture NativeTexture => IsRenderTex ? nativeRenderTexture.Texture : nativeTexture;
+        internal SFML.Graphics.RenderTexture NativeRenderTexture => IsRenderTex ? nativeRenderTexture : throw new Sargon.Errors.SargonException("");
         #endregion                                                                                                
 
         #region Ctors
@@ -59,7 +59,7 @@ namespace Sargon.Assets {
                 } else {
                     nativeTexture = new SFML.Graphics.Texture(Path);
                 }
-                nativeTexture.Smooth = true;
+                nativeTexture.Smooth = false;
                 nativeTexture.Repeated = true;
                 Size = new Int2((int)nativeTexture.Size.X, (int)nativeTexture.Size.Y);
             } catch (Exception) { // pokemon exception catching :P
@@ -74,12 +74,20 @@ namespace Sargon.Assets {
             Size = new Int2();
         }
 
-        public void Clear() {
+        public void Clear(Ur.Color? color) {
             if (!IsRenderTex) throw new Errors.SargonException("Cannot clear nonrender texture");
+
+            if (!color.HasValue) color = Ur.Color.Black;
+
             if (nativeRenderTexture != null) {
-                nativeRenderTexture.Clear(Ur.Color.Black.ToSFMLColor());
+                nativeRenderTexture.Clear(color.Value.ToSFMLColor());
             }
 
+        }
+
+        public void ApplyRenderTargetChanges() {
+            if (!IsRenderTex) throw new Errors.SargonException("Cannot Display nonrender texture");
+            nativeRenderTexture?.Display();
         }
 
         public void Dispose() {
