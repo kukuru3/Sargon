@@ -29,6 +29,14 @@ namespace Sargon.Assets {
             LoadState = LoadStates.Active;
         }
 
+        public float GetGlyphWidth(string glyph, int charSize) {
+            var q = (uint)char.ConvertToUtf32(glyph, 0);
+            var g = NativeFont.GetGlyph( q, (uint)charSize, false, 0f);
+            return g.Advance;
+        }
+
+        public float GetLineHeight(int charSize) => NativeFont.GetLineSpacing((uint)charSize);
+
         public void Unload() {
             LoadState = LoadStates.NotLoaded;
         }

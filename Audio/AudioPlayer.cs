@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Sargon.Audio {
     public class AudioPlayer : State {
 
-        private HashSet<Emitter> sounds; // these are emitters
+        private HashSet<Emitter> sounds; // these are "emitters", AKA audio sources.
         private HashSet<SoundInstance> instances; // these are helper objects that are a thin wrapper around SFML sounds or music.
 
         protected internal override void Initialize() {
@@ -30,13 +30,14 @@ namespace Sargon.Audio {
             sound.DieGracefully();
         }
 
-        public SoundInstance Play(Sample sample, bool loop = false, float volume = 1f) {
+        public SoundInstance Play(Sample sample, bool loop = false, float volume = 1f, float pitch = 1f) {
             if (sample == null) return null;
             SoundInstance item;
             if (sample.Streaming) {
                 var m = new SFML.Audio.Music(sample.Path);
                 m.Loop = loop;
                 m.Volume = volume * 100f;
+                m.Pitch = pitch;
                 m.Play();
                 item = new SoundInstance() { music = m };
             } else {
@@ -45,11 +46,16 @@ namespace Sargon.Audio {
                 s.SoundBuffer = sample.SoundBuffer;
                 s.Loop = loop;
                 s.Volume = volume * 100f;
+                s.Pitch = pitch;
                 s.Play();
                 item = new SoundInstance() { clip = s };
             }
             instances.Add(item);
             return item;
+        }
+
+        public void StopAllPlayedAudio() {
+            foreach (var instance in instances) if (!instance.IsComplete()) instance.Stop();
         }
 
         void CleanupInstances() {
@@ -61,6 +67,7 @@ namespace Sargon.Audio {
             internal SFML.Audio.Music music;
 
             internal bool IsComplete() => clip?.Status == SFML.Audio.SoundStatus.Stopped || music?.Status == SFML.Audio.SoundStatus.Stopped;
+
             internal void SetLooping(bool v) {
                 if (clip != null) clip.Loop = v;
                 if (music != null) music.Loop = v;

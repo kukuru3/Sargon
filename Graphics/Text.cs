@@ -31,6 +31,7 @@ namespace Sargon.Graphics {
         private int charsize;
         private bool isDirty;
         private string text;
+        private float verticalSpacingModifier;
 
         private List<SFMLText> lineObjects;
         #endregion
@@ -72,6 +73,11 @@ namespace Sargon.Graphics {
         public Rect Rect {
             get => rect;
             set { rect = value; MarkDirty(); }
+        }
+
+        public float VerticalSpacingModifier {
+            get => verticalSpacingModifier;
+            set { verticalSpacingModifier = value; MarkDirty(); }
         }
 
         public Rect Bounds { get; private set; }
@@ -167,7 +173,7 @@ namespace Sargon.Graphics {
                     var rect = textLine.GetLocalBounds();
 
                     var rw = rect.Width * Scale.x;
-                    var rh = rect.Height * Scale.y;
+                    var rh = (rect.Height) * Scale.y;
 
                     // align:
                     var xx = HorizontalAlign(textLine, rw, this.rect.W);
@@ -175,7 +181,6 @@ namespace Sargon.Graphics {
 
                     // change position
                     textLine.Position = new SFML.System.Vector2f(this.rect.X0 + xx, this.rect.Y0 + yy);
-
 
                     // recalculate bounds:
                     minX = Numbers.Min(minX, xx);
@@ -202,7 +207,7 @@ namespace Sargon.Graphics {
         }
 
         private float VerticalAlign(SFMLText textToAlign, float textHeight, float rectHeight, int lineIndex, int lineTotal) {
-            var ls = Font.NativeFont.GetLineSpacing((uint)CharacterSize) * scale.x;
+            var ls = Font.NativeFont.GetLineSpacing((uint)CharacterSize) * scale.x + VerticalSpacingModifier;
             var totalTextHeight = ls * lineTotal;
             var factor = 0.5f * ((int)Anchor / 3);
             var y0 = (rectHeight - totalTextHeight) * factor;

@@ -7,6 +7,4 @@ namespace Sargon.Tweaks {
 
         void Process(TweakEngine.ITrackedTweakable tweak);
     }
-
-
 }
